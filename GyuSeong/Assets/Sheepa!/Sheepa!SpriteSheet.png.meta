@@ -1,0 +1,310 @@
+fileFormatVersion: 2
+guid: 7e00107832bc3244ea108263d4eedf5c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3722499967916567630
+    second: Sheepa!_Face
+  - first:
+      213: 991020235189141725
+    second: Sheepa!SpriteSheet_1
+  - first:
+      213: -3600504526815213675
+    second: Sheepa!_Head
+  - first:
+      213: -4237425986809752749
+    second: Sheepa!_Body
+  - first:
+      213: 5809246343503970391
+    second: Sheepa!_Leg_WN
+  - first:
+      213: 573535868812049296
+    second: Sheepa!_Leg_EN
+  - first:
+      213: 3030747366194909471
+    second: Sheepa!_Leg_WS
+  - first:
+      213: 2753440754652662777
+    second: Sheepa!_Leg_ES
+  - first:
+      213: 2008125351028989460
+    second: Sheepa!_Text
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Sheepa!_Face
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 218
+        width: 38
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8338447188ff1c240ba890a38b55150f
+      internalID: 3722499967916567630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Head
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 200
+        width: 55
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70f19ffc45b652e4992dba028f0bf6d6
+      internalID: -3600504526815213675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Body
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 104
+        width: 173
+        height: 152
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 542c018fcae1ab740af8f65fcc8be366
+      internalID: -4237425986809752749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Leg_WN
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 155
+        width: 52
+        height: 23
+      alignment: 9
+      pivot: {x: 0.79307234, y: 0.84786457}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c1ff9eaf0303de438c3f5653b39f08d
+      internalID: 5809246343503970391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Leg_EN
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 165
+        width: 43
+        height: 13
+      alignment: 9
+      pivot: {x: 0.056984127, y: 0.61723095}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18da38b16edc31440a6c050ac49457bc
+      internalID: 573535868812049296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Leg_WS
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 111
+        width: 30
+        height: 32
+      alignment: 9
+      pivot: {x: 0.8936938, y: 0.90480614}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30707d5f5e8acf84d8a4b5afb2633e94
+      internalID: 3030747366194909471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Leg_ES
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 114
+        width: 34
+        height: 26
+      alignment: 9
+      pivot: {x: 0.08538931, y: 0.86634064}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9eca9d22bb27764abc213692cec5a19
+      internalID: 2753440754652662777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheepa!_Text
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 9
+        width: 305
+        height: 84
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45f951c575b838945b0ee0712729b53d
+      internalID: 2008125351028989460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
