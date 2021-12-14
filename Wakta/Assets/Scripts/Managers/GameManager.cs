@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +14,8 @@ public class GameManager : MonoSingleton<GameManager>
 	private void Awake()
 	{
 		Instance = this;
-		SceneManager.LoadScene(LastScene, LoadSceneMode.Additive);
+		if (!DebugManager.Instance.isDebug || !String.IsNullOrEmpty(DebugManager.Instance.sceneName))
+			SceneManager.LoadScene(LastScene, LoadSceneMode.Additive);
 	}
 
 	public static string LastScene {

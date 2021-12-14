@@ -21,11 +21,11 @@ public class Panzee : MonoBehaviour, ISelectable
 	public float runSpeed = 2;
     public float moveForce = 10;
     public float jumpForce = 50;
-	public float superJumpForce = 100;
+    public float keepJumpGap = 1;
 
     public float scale = 1;
     public enum Command {
-        Wait, Stop, Right, RightDash, Left, LeftDash, Jump, SuperJump
+        Wait, Stop, Right, RightDash, Left, LeftDash, Jump, KeepJump, LeftJump, RightJump
     }
 
 	public TextMeshPro keyButton;
@@ -137,45 +137,52 @@ public class Panzee : MonoBehaviour, ISelectable
 		switch (command) {
             case Command.Right: case Command.RightDash:
                 if (lastCommand != command) {
-                    animator.SetFloat("speed", command == Command.RightDash ? 1 :0.7f);
+                    animator.SetFloat(Speed, command == Command.RightDash ? 1 :0.7f);
                     tf.localScale = new Vector3(scale, scale, 1);
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
                 }
-				if (rb.velocity.x < (command == Command.RightDash ? runSpeed : walkSpeed))
-					rb.AddForce(Vector2.right * moveForce, ForceMode2D.Force);
+                rb.velocity = new Vector2(moveForce * (command == Command.RightDash ? runSpeed : walkSpeed), rb.velocity.y);
                 break;
             case Command.Left: case Command.LeftDash:
                 if (lastCommand != command) {
-                    animator.SetFloat("speed", command == Command.RightDash ? 1 :0.7f);
+                    animator.SetFloat(Speed, command == Command.RightDash ? 1 :0.7f);
                     tf.localScale = new Vector3(-scale, scale, 1);
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
 				}
-				if (rb.velocity.x > (command == Command.LeftDash ? -runSpeed : -walkSpeed))
-					rb.AddForce(Vector2.left * moveForce, ForceMode2D.Force);
+                rb.velocity = new Vector2(-moveForce * (command == Command.LeftDash ? runSpeed : walkSpeed), rb.velocity.y);
                 break;
-            case Command.Jump: case Command.SuperJump:
+            case Command.Jump: case Command.KeepJump:
                 if (isGround) {
-                    rb.AddForce(Vector2.up * ((command == Command.SuperJump ? superJumpForce : jumpForce)), ForceMode2D.Force);
-					if (command == lastCommand) command = Command.Wait;
+                    rb.AddForce(Vector2.up, ForceMode2D.Force);
+					if (command == Command.Jump) command = lastCommand;
 					else
-						command = lastCommand;
+						command = Command.KeepJump;
 				}
                 break;
-            case Command.Wait: case Command.Stop:
+            case Command.Stop:
 				if (lastCommand != command) {
-					animator.SetFloat("speed", 0);
+					animator.SetFloat(Speed, 0);
 				}
-				if (command == Command.Stop && Mathf.Abs(rb.velocity.x) < runSpeed) rb.velocity = new Vector2(0, rb.velocity.y);
-                break;
+				rb.velocity = new Vector2(0, rb.velocity.y);
+				break;
         }
         lastCommand = command;
+
+        // Vector2 horizontalMove = rb.velocity;
+        // horizontalMove.y = 0;
+        // float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
+        // horizontalMove.Normalize();
+        // RaycastHit hit;
+        // if (rb.Swea(horizontalMove, out hit, distance))
+	       //  rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
 	private bool isApplicationQuitting;
+	private static readonly int Speed = Animator.StringToHash("speed");
 
-    private void OnDisable() {
+	private void OnDisable() {
         if (isApplicationQuitting) return;
         animator.SetFloat("speed", 0);
         command = Command.Wait;

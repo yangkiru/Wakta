@@ -31,9 +31,9 @@ public class DebugManager : MonoSingleton<DebugManager>
             else if (Input.GetKeyDown(KeyCode.D))
                 (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Right : Panzee.Command.RightDash);
             else if (Input.GetKeyDown(KeyCode.W))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Jump : Panzee.Command.SuperJump);
+                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Jump : Panzee.Command.KeepJump);
             else if (Input.GetKeyDown(KeyCode.S))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Wait : Panzee.Command.Stop);
+                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Stop);
 			if (Input.GetKeyDown(KeyCode.T))
 				(Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetText("채팅 테스트");
         }

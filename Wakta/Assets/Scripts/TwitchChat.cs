@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using System.IO;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TwitchChat : MonoBehaviour
 {
@@ -71,7 +72,7 @@ public class TwitchChat : MonoBehaviour
 						string[] command = temp.Split(' ');
 						switch(command[0]) {
 							case "scene":
-								command[1]
+								SceneManager.LoadScene(command[1]);
 								break;
 						}
 					}
@@ -102,9 +103,9 @@ public class TwitchChat : MonoBehaviour
 						case 'w':
                             panzee.SetCommand(Panzee.Command.Jump); break;
 						case 'W':
-							panzee.SetCommand(Panzee.Command.SuperJump); break;
-						case 's':
-                            panzee.SetCommand(Panzee.Command.Wait); break;
+							panzee.SetCommand(Panzee.Command.KeepJump); break;
+						case 's': case 'S':
+                            panzee.SetCommand(Panzee.Command.Stop); break;
                         default:
 							message = string.Format("{0}은/는 명령어를 칠 줄 몰라요!", chatName); break;
                     }
