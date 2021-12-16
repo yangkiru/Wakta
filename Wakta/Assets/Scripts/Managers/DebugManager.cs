@@ -27,11 +27,11 @@ public class DebugManager : MonoSingleton<DebugManager>
         }
         if(Wakta.Instance.selected != null && !Wakta.Instance.selected.Equals(Wakta.Instance)) {
             if (Input.GetKeyDown(KeyCode.A))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Left : Panzee.Command.LeftDash);
+                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Left : Panzee.Command.LeftRun);
             else if (Input.GetKeyDown(KeyCode.D))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Right : Panzee.Command.RightDash);
+                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Right : Panzee.Command.RightRun);
             else if (Input.GetKeyDown(KeyCode.W))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Jump : Panzee.Command.KeepJump);
+                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Jump : Panzee.Command.JumpAuto);
             else if (Input.GetKeyDown(KeyCode.S))
                 (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Stop);
 			if (Input.GetKeyDown(KeyCode.T))
@@ -60,13 +60,13 @@ public class DebugManager : MonoSingleton<DebugManager>
 					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Left);
 					break;
 				case "A":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.LeftDash);
+					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.LeftRun);
 					break;
 				case "d":
 					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Right);
 					break;
 				case "D":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.RightDash);
+					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.RightRun);
 					break;
 				case "s":
 					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Wait);

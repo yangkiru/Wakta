@@ -1,125 +1,146 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System;
-using System.ComponentModel;
 using System.Net.Sockets;
 using System.IO;
-using TMPro;
-using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class TwitchChat : MonoBehaviour
 {
-    private TcpClient twitchClient;
-    private StreamReader reader;
-    private StreamWriter writer;
+    // might want to use these while testing with your own information
+    public string Password;
+    public string Username;
+    public string ChannelName;
 
-	public TextMeshProUGUI developerText;
-
-	public bool isUseFile = false;
-	private bool toggle = true;
-
-	public string filePath = "Assets/Resources/twitch_setting.txt";
-	public string username, password, channelName;//https://twitchapps.com/tmi/
-    void Start()
+    public static TwitchChat Instance
     {
-		if (isUseFile) {
-			StreamReader reader = new StreamReader(filePath);
-			username = reader.ReadLine();
-			password = reader.ReadLine();
-			channelName = reader.ReadLine();
-		}
-		Connect();
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new TwitchChat();
+            }
+
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
+    private static TwitchChat _instance;
+
+    private CommandCollection _commands;
+    private TcpClient _twitchClient;
+    private StreamReader _reader;
+    private StreamWriter _writer;
+    private int timer = 0;
+
+
+    void Awake()
+    {
+        _instance = this;
+        DontDestroyOnLoad(this);
+        TwitchCredentials credentials = new TwitchCredentials
+        {
+            ChannelName = this.ChannelName,
+            Username = this.Username,
+            Password = this.Password
+        };
+    }
+
     void Update()
     {
-        if(!twitchClient.Connected) {
-            Connect();
+        if (_twitchClient != null && _twitchClient.Connected)
+        {
+            ReadChat();
         }
-		ReadChat();
+        else if (++timer > 60)
+        {
+            timer = 0;
+            TwitchCredentials credentials = new TwitchCredentials
+            {
+                ChannelName = this.ChannelName,
+                Username = this.Username,
+                Password = this.Password
+            };
+            Connect(credentials, new CommandCollection());
+        }
     }
 
-    private void Connect() {
-        twitchClient = new TcpClient("irc.chat.twitch.tv", 6667);
-        reader = new StreamReader(twitchClient.GetStream());
-        writer = new StreamWriter(twitchClient.GetStream());
-
-        writer.WriteLine("PASS " + password);
-        writer.WriteLine("NICK " + username);
-        writer.WriteLine("USER " + username + " 8 * :" + username);
-        writer.WriteLine("JOIN #" + channelName);
-        writer.Flush();
+    public void SetNewCommandCollection(CommandCollection commands)
+    {
+        _commands = commands;
     }
 
-    private void ReadChat() {
-        if(twitchClient.Available > 0) {
-            var message = reader.ReadLine();
-            if(message.Contains("PRIVMSG")) {
+    public void Connect(TwitchCredentials credentials, CommandCollection commands)
+    {
+        _commands = commands;
+        _twitchClient = new TcpClient("irc.chat.twitch.tv", 6667);
+        _reader = new StreamReader(_twitchClient.GetStream());
+        _writer = new StreamWriter(_twitchClient.GetStream());
+
+        _writer.WriteLine("PASS " + credentials.Password);
+        _writer.WriteLine("NICK " + credentials.Username);
+        _writer.WriteLine("USER " + credentials.Username + " 8 * :" + credentials.Username);
+        _writer.WriteLine("JOIN #" + credentials.ChannelName);
+        _writer.Flush();
+    }
+
+    private void ReadChat()
+    {
+        if (_twitchClient.Available > 0)
+        {
+            string message = _reader.ReadLine();
+            Debug.Log(message);
+
+            // Twitch sends a PING message every 5 minutes or so. We MUST respond back with PONG or we will be disconnected 
+            if (message.Contains("PING"))
+            {
+                _writer.WriteLine("PONG");
+                _writer.Flush();
+                return;
+            }
+
+            if (message.Contains("PRIVMSG"))
+            {
                 var splitPoint = message.IndexOf("!", 1);
-                var chatName = message.Substring(1, splitPoint-1);
-				if (chatName.CompareTo("yangkiru") == 0) {
-					splitPoint = message.IndexOf(":", 1);
-					var temp = message.Substring(splitPoint + 1);
-					if (temp[0].CompareTo('\'') == 0) {
-						developerText.text = temp.Substring(1);
-						Debug.Log(developerText.text);
-						developerText.canvasRenderer.SetAlpha(1);
-						developerText.CrossFadeAlpha(0, 5, false);
-					} else if (temp[0].CompareTo(';') == 0) {
-						temp = temp.Substring(1);
-						string[] command = temp.Split(' ');
-						switch(command[0]) {
-							case "scene":
-								SceneManager.LoadScene(command[1]);
-								break;
-						}
-					}
-				}
+                var author = message.Substring(0, splitPoint);
+                author = author.Substring(1);
 
-                Panzee panzee = null;
-                PanzeeManager.Instance.panzeeDict.TryGetValue(chatName, out panzee);
-
-                if (panzee == null && PanzeeManager.Instance.panzeeDict.Count >= PanzeeManager.Instance.maxPanzee) {
-                    return;
-                }
-
+                // users message
                 splitPoint = message.IndexOf(":", 1);
                 message = message.Substring(splitPoint + 1);
 
-                if (panzee != null && message[0].CompareTo('!') == 0) {
-                    char command = message[1];
-                    message = message.Substring(2);
-                    switch (command) {
-                        case 'd':
-                            panzee.SetCommand(Panzee.Command.Right); break;
-						case 'D':
-							panzee.SetCommand(Panzee.Command.RightDash); break;
-						case 'a':
-                            panzee.SetCommand(Panzee.Command.Left); break;
-						case 'A':
-							panzee.SetCommand(Panzee.Command.LeftDash); break;
-						case 'w':
-                            panzee.SetCommand(Panzee.Command.Jump); break;
-						case 'W':
-							panzee.SetCommand(Panzee.Command.KeepJump); break;
-						case 's': case 'S':
-                            panzee.SetCommand(Panzee.Command.Stop); break;
-                        default:
-							message = string.Format("{0}은/는 명령어를 칠 줄 몰라요!", chatName); break;
-                    }
-                    if(message.CompareTo(string.Empty) != 0)
-                        panzee.SetText(message);
-                } else if (panzee != null)
-                    panzee.SetText(message);
+                if (message.StartsWith(TwitchCommands.CmdPrefix))
+                {
+                    // get the first word
+                    int index = message.IndexOf(" ");
+                    string command = index > -1 ? message.Substring(0, index) : message;
+                    _commands.ExecuteCommand(
+                        command,
+                        new TwitchCommandData
+                        {
+                            Author = author,
+                            Message = message
+                        });
+
+                    return;
+                }
+
+                Panzee panzee = null;
+                PanzeeManager.Instance.panzeeDict.TryGetValue(author, out panzee);
+
+                if (panzee == null)
+                {
+                    // Fail Because It's Full
+                    if (PanzeeManager.Instance.panzeeDict.Count >= PanzeeManager.Instance.maxPanzee)
+                        return;
+                    else // Join
+                        PanzeeManager.Instance.SpawnPanzee(author, message);
+                }
                 else
-                    Join(chatName, message);
+                    panzee.SetText(message);
             }
         }
     }
-
-    private void Join(string chatName, string message) {
-        PanzeeManager.Instance.SpawnPanzee(chatName, message);
-    }
 }
+
+    
+
