@@ -717,14 +717,15 @@ MonoBehaviour:
   walkSpeed: 2.5
   runSpeed: 3.5
   moveForce: 1
-  jumpForce: 350
-  superJumpForce: 500
+  jumpForce: 400
+  cmdTimer: 0
   scale: 1
   keyButton: {fileID: 8929599983529302035}
   tf: {fileID: 3422038026874187423}
   text: {fileID: 5878523231156299541}
   rb: {fileID: 3422038026874187393}
   command: 0
+  animator: {fileID: 3422038026419472012}
 --- !u!50 &3422038026874187393
 Rigidbody2D:
   serializedVersion: 4

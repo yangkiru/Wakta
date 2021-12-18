@@ -24,11 +24,14 @@ public class Panzee : MonoBehaviour, ISelectable
     public float moveForce = 10;
     public float jumpForce = 50;
     public float cmdTimer = 0;
-
+    public float jumpTimer = 0;
+    public float jumpTimerSet = 0;
+	
     public float scale = 1;
     public enum Command {
-        Wait, Stop, Right, RightRun, Left, LeftRun, Jump, JumpAuto, LeftJump, RightJump
+        Wait, Stop, Jump, Left, LeftRun, LeftJump, LeftJumpRun, Right, RightRun, RightJump, RightJumpRun
     }
+	public bool isJumpAuto = false;
 
 	public TextMeshPro keyButton;
 	public Transform tf;
@@ -38,7 +41,9 @@ public class Panzee : MonoBehaviour, ISelectable
 	[SerializeField]
     private Command command;
     private Command lastCommand;
+    
 	private float textTime;
+	[SerializeField]
     private Animator animator;
 
     private void Awake() {
@@ -54,7 +59,8 @@ public class Panzee : MonoBehaviour, ISelectable
 
 	public void SetCommand(Command command) {
         this.command = command;
-    }
+        isJumpAuto = false;
+	}
 
     public void SetText(string text) {
         this.text.text = text;
@@ -133,14 +139,34 @@ public class Panzee : MonoBehaviour, ISelectable
 		if (cmdTimer > 0) cmdTimer -= Time.fixedDeltaTime;
 		RaycastHit2D[] hits = Physics2D.BoxCastAll(groundCheck.position, groundCheck.localScale, 0, Vector2.zero, 0, GameManager.Instance.jumpableLayer);// | GameManager.Instance.panzeeLayer);
 		bool isGround = false;
-		foreach(var h in hits) {
+		for (var index = 0; index < hits.Length; index++)
+		{
+			var h = hits[index];
 			if (h && !h.collider.CompareTag("Panzee") && h.transform != tf)
 				isGround = true;
 		}
+		if (jumpTimer > 0) jumpTimer -= Time.fixedDeltaTime;
+		if (command == Command.Jump ||
+		    command == Command.LeftJump ||
+		    command == Command.RightJump ||
+		    command == Command.LeftJumpRun ||
+		    command == Command.RightJumpRun ||
+		    (isJumpAuto && (jumpTimer <= 0)))
+		{
+			jumpTimer = jumpTimerSet;
+			if (isGround) {
+				rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+
+				if (command == Command.Jump) (command, lastCommand) = (lastCommand, command);
+				else command -= 2;
+			}
+		}
+		
+		
 		switch (command) {
             case Command.Right: case Command.RightRun:
                 if (lastCommand != command) {
-                    animator.SetFloat(Speed, command == Command.RightRun ? 1 :0.7f);
+                    animator.SetFloat(Speed, command == Command.RightRun ? 1.5f :1f);
                     tf.localScale = new Vector3(scale, scale, 1);
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
@@ -149,40 +175,24 @@ public class Panzee : MonoBehaviour, ISelectable
                 break;
             case Command.Left: case Command.LeftRun:
                 if (lastCommand != command) {
-                    animator.SetFloat(Speed, command == Command.RightRun ? 1 :0.7f);
+                    animator.SetFloat(Speed, command == Command.RightRun ? 1.5f :1f);
                     tf.localScale = new Vector3(-scale, scale, 1);
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
 				}
                 rb.velocity = new Vector2(-moveForce * (command == Command.LeftRun ? runSpeed : walkSpeed), rb.velocity.y);
                 break;
-            case Command.Jump: case Command.JumpAuto:
-                if (isGround) {
-	                if (cmdTimer <= 0)
-	                {
-		                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
-	                }
-
-	                if (command == Command.Jump) command = lastCommand;
-                }
-                break;
             case Command.Stop: case Command.Wait:
-				if (lastCommand != command) {
-					animator.SetFloat(Speed, 0);
-				}
-				rb.velocity = new Vector2(0, rb.velocity.y);
-				break;
+	            if (isGround)
+	            {
+		            rb.velocity = new Vector2(0, rb.velocity.y);
+		            animator.SetFloat(Speed, 0);
+	            }
+	            break;
         }
-        lastCommand = command;
 
-        // Vector2 horizontalMove = rb.velocity;
-        // horizontalMove.y = 0;
-        // float distance = horizontalMove.magnitude * Time.fixedDeltaTime;
-        // horizontalMove.Normalize();
-        // RaycastHit hit;
-        // if (rb.Swea(horizontalMove, out hit, distance))
-	       //  rb.velocity = new Vector2(0, rb.velocity.y);
-    }
+		lastCommand = command;
+	}
 
 	private bool isApplicationQuitting;
 	private static readonly int Speed = Animator.StringToHash("speed");

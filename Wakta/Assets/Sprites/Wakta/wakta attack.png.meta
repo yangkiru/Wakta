@@ -1,0 +1,562 @@
+fileFormatVersion: 2
+guid: 0d9c77f792b2b2a45a238d1d3b9215f1
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: wakta attack_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c70f7fb565285ef44b9601586fad9c0c
+      internalID: 1435638104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_1
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4469a6cf36da3c342b0a129463985f00
+      internalID: 1156009715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_2
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e5a36014973f8249b75d1a19757f1d5
+      internalID: -1177472998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_3
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d65de8222565c3846969562b41e83700
+      internalID: 2044143969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_4
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 291cf8f720a21b04c9b5b79e4fcc46f9
+      internalID: -345087696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_5
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2345cfe5ffe6f80478cc681af48a8786
+      internalID: -1865500367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_6
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5287341807ca1149a63d6cdfb9a9960
+      internalID: 242297708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_7
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 996e5a8ecd8ccfc439807ea932cac55c
+      internalID: -1706251267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_8
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b82b1c039c9ae741b2e7002a52a74aa
+      internalID: -899834129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_9
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44cc2c8e3d88af14ab5c149fe62d3bf5
+      internalID: 1284303011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_10
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dc37c82a55802248b1955b1ec0af0ae
+      internalID: 1482943826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_11
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 166b2959215d73e4593faa3d1a2dbe74
+      internalID: -738653553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_12
+      rect:
+        serializedVersion: 2
+        x: 937
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 612779750e51c92449888fbfc69beea4
+      internalID: 1099376550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_13
+      rect:
+        serializedVersion: 2
+        x: 1015
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4999b3e6bc6e8c4f96f053ff272ca61
+      internalID: 18950137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_14
+      rect:
+        serializedVersion: 2
+        x: 1093
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea49fe9bdde6a284d929474546fd9efc
+      internalID: -1023877362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_15
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8b2fbed24fb4ae43857d36d1ca06488
+      internalID: 1087489190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_16
+      rect:
+        serializedVersion: 2
+        x: 1249
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfeb7bee239ecf046bc64b7228cdc480
+      internalID: -1242817913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_17
+      rect:
+        serializedVersion: 2
+        x: 1327
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b1ca1618ca49484591d1fb0792975cd
+      internalID: 1616211476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_18
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b11e6b730b453346800fed7549f022b
+      internalID: 1868109312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakta attack_19
+      rect:
+        serializedVersion: 2
+        x: 1483
+        y: 1
+        width: 77
+        height: 58
+      alignment: 9
+      pivot: {x: 0.25974026, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a26746f896a477a419db5d63b1c68575
+      internalID: 995474525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      wakta attack_8: -899834129
+      wakta attack_4: -345087696
+      wakta attack_12: 1099376550
+      wakta attack_3: 2044143969
+      wakta attack_11: -738653553
+      wakta attack_15: 1087489190
+      wakta attack_19: 995474525
+      wakta attack_1: 1156009715
+      wakta attack_5: -1865500367
+      wakta attack_13: 18950137
+      wakta attack_7: -1706251267
+      wakta attack_10: 1482943826
+      wakta attack_14: -1023877362
+      wakta attack_6: 242297708
+      wakta attack_0: 1435638104
+      wakta attack_17: 1616211476
+      wakta attack_9: 1284303011
+      wakta attack_18: 1868109312
+      wakta attack_2: -1177472998
+      wakta attack_16: -1242817913
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

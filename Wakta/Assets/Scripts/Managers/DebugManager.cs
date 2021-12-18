@@ -31,60 +31,27 @@ public class DebugManager : MonoSingleton<DebugManager>
             else if (Input.GetKeyDown(KeyCode.D))
                 (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Right : Panzee.Command.RightRun);
             else if (Input.GetKeyDown(KeyCode.W))
-                (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Jump : Panzee.Command.JumpAuto);
+            {
+	            Panzee panzee = (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>();
+	            panzee.SetCommand(Panzee.Command.Jump);
+	            if (Input.GetKey(KeyCode.RightShift))
+	            {
+		            panzee.isJumpAuto = true;
+		            panzee.jumpTimer = 0;
+		            panzee.jumpTimerSet = 0.5f;
+	            }
+            }
             else if (Input.GetKeyDown(KeyCode.S))
                 (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Stop);
+            else if (Input.GetKeyDown(KeyCode.Q))
+	            (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.LeftJump : Panzee.Command.LeftJumpRun);
+            else if (Input.GetKeyDown(KeyCode.E))
+	            (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.RightJump : Panzee.Command.RightJumpRun);
 			if (Input.GetKeyDown(KeyCode.T))
 				(Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetText("채팅 테스트");
         }
         
     }
-
-	public void Command(ISelectable selectable, string str)
-	{
-		bool isWakta = selectable.Equals(Wakta.Instance);
-		if (isWakta) {
-			switch (str) {
-				case "respawn":
-					Wakta.Instance.Respawn();
-					break;
-				case "reload":
-					SceneManager.LoadScene("Loading");
-					Wakta.Instance.Respawn();
-					Panzee.RespawnAll();
-					break;
-			}
-		} else {
-			switch (str) {
-				case "a":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Left);
-					break;
-				case "A":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.LeftRun);
-					break;
-				case "d":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Right);
-					break;
-				case "D":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.RightRun);
-					break;
-				case "s":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Wait);
-					break;
-				case "S":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().SetCommand(Panzee.Command.Stop);
-					break;
-				case "respawn":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().Respawn();
-					break;
-				case "kill":
-					(selectable as MonoBehaviour).GetComponent<Panzee>().Damage(3);
-					break;
-
-			}
-		}
-
-	}
 
 	public void Enter(string scene)
 	{

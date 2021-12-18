@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TwitchChat : MonoBehaviour
 {
     // might want to use these while testing with your own information
-    public string Password;
-    public string Username;
-    public string ChannelName;
 
     public static TwitchChat Instance
     {
@@ -32,17 +30,18 @@ public class TwitchChat : MonoBehaviour
     private StreamWriter _writer;
     private int timer = 0;
 
-
+    private TwitchCredentials credentials = new TwitchCredentials
+    {
+        ChannelName = "yangkiru",
+        Username = "yangkiru",
+        Password = "oauth:rh47hlslk2bns0om844zngzaq9dv0m"
+    };
+    
     void Awake()
     {
         _instance = this;
         DontDestroyOnLoad(this);
-        TwitchCredentials credentials = new TwitchCredentials
-        {
-            ChannelName = this.ChannelName,
-            Username = this.Username,
-            Password = this.Password
-        };
+        Connect(credentials, new CommandCollection());
     }
 
     void Update()
@@ -53,13 +52,6 @@ public class TwitchChat : MonoBehaviour
         }
         else if (++timer > 60)
         {
-            timer = 0;
-            TwitchCredentials credentials = new TwitchCredentials
-            {
-                ChannelName = this.ChannelName,
-                Username = this.Username,
-                Password = this.Password
-            };
             Connect(credentials, new CommandCollection());
         }
     }
@@ -137,6 +129,15 @@ public class TwitchChat : MonoBehaviour
                 }
                 else
                     panzee.SetText(message);
+
+                return;
+            }
+
+            if (message.Contains("Invalid NICK"))
+            {
+                Debug.Log("Error: Invalid NICK");
+                _twitchClient.Close();
+                _twitchClient = null;
             }
         }
     }

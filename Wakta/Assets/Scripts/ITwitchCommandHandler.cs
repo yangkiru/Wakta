@@ -30,6 +30,10 @@ public static class TwitchCommands {
     public static readonly string CmdJumpAuto = "W";
     public static readonly string CmdStop = "s";
     public static readonly string CmdStopSemi = "S";
+    public static readonly string CmdLeftJump = "q";
+    public static readonly string CmdLeftJumpRun = "Q";
+    public static readonly string CmdRightJump = "e";
+    public static readonly string CmdRightJumpRun = "E";
 }
 
 /*EXAMPLES - This is how I would impletement this interface and create classes with actual command logic
@@ -92,7 +96,8 @@ public class TwitchRightRunCommand : ITwitchCommandHandler
 // !w command
 public class TwitchJumpCommand : ITwitchCommandHandler
 {
-    public void HandleCommand(TwitchCommandData data){
+    public void HandleCommand(TwitchCommandData data)
+    {
         Panzee panzee = null;
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
         if (panzee != null)
@@ -107,7 +112,12 @@ public class TwitchJumpAutoCommand : ITwitchCommandHandler
         Panzee panzee = null;
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
         if (panzee != null)
-            panzee.SetCommand(Panzee.Command.JumpAuto);
+        {
+            panzee.isJumpAuto = true;
+            panzee.jumpTimer = 0;
+            bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdJumpAuto).Length).TrimStart(' '), out panzee.jumpTimerSet);
+            if (!success) panzee.jumpTimerSet = 0.5f;
+        }
     }
 }
 
@@ -119,6 +129,46 @@ public class TwitchStopCommand : ITwitchCommandHandler
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
         if (panzee != null)
             panzee.SetCommand(Panzee.Command.Stop);
+    }
+}
+
+public class TwitchLeftJumpCommand : ITwitchCommandHandler
+{
+    public void HandleCommand(TwitchCommandData data){
+        Panzee panzee = null;
+        PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (panzee != null)
+            panzee.SetCommand(Panzee.Command.LeftJump);
+    }
+}
+
+public class TwitchLeftJumpRunCommand : ITwitchCommandHandler
+{
+    public void HandleCommand(TwitchCommandData data){
+        Panzee panzee = null;
+        PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (panzee != null)
+            panzee.SetCommand(Panzee.Command.LeftJumpRun);
+    }
+}
+
+public class TwitchRightJumpCommand : ITwitchCommandHandler
+{
+    public void HandleCommand(TwitchCommandData data){
+        Panzee panzee = null;
+        PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (panzee != null)
+            panzee.SetCommand(Panzee.Command.RightJump);
+    }
+}
+
+public class TwitchRightJumpRunCommand : ITwitchCommandHandler
+{
+    public void HandleCommand(TwitchCommandData data){
+        Panzee panzee = null;
+        PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (panzee != null)
+            panzee.SetCommand(Panzee.Command.RightJumpRun);
     }
 }
 
@@ -137,6 +187,10 @@ public class CommandCollection {
         TwitchStopCommand stopCommand = new TwitchStopCommand();
         _commands.Add(TwitchCommands.CmdStop, stopCommand);
         _commands.Add(TwitchCommands.CmdStopSemi, stopCommand);
+        _commands.Add(TwitchCommands.CmdLeftJump, new TwitchLeftJumpCommand());
+        _commands.Add(TwitchCommands.CmdLeftJumpRun, new TwitchLeftJumpRunCommand());
+        _commands.Add(TwitchCommands.CmdRightJump, new TwitchRightJumpCommand());
+        _commands.Add(TwitchCommands.CmdRightJumpRun, new TwitchRightJumpRunCommand());
     }
 
     public bool HasCommand(string command){

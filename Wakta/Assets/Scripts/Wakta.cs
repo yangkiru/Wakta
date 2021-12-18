@@ -12,15 +12,16 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
     public Rigidbody2D rb;
 
     public Transform leftHand;
-
-    public AudioClip[] attackClips;
-    public AudioSource attackSound;
+    
 	public Transform keyButton;
 
     public ISelectable selected = null;
 
     public float scale = 1;
 	public List<Panzee> insidePanzee = new List<Panzee>();
+
+	public Animator animator;
+	public Animator atkEffAnimator;
 
 	private void Start()
 	{
@@ -60,10 +61,12 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 
         if (Input.GetKeyDown(KeyCode.Space)) { //호치
             if (selected != null && !selected.Equals(this)) {
-                Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
-                panzee.Damage(damage);
-                attackSound.PlayOneShot(attackClips[Random.Range(0, attackClips.Length)]);
-                panzee.impulseSource.GenerateImpulse();
+                //Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
+                //panzee.Damage(damage);
+                //attackSound.PlayOneShot(attackClips[Random.Range(0, attackClips.Length)]);
+                //panzee.impulseSource.GenerateImpulse();
+                animator.SetTrigger("attack");
+                //atkEffAnimator.gameObject.SetActive(true);
             }
         }
 
