@@ -13,7 +13,6 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Awake()
 	{
-		Instance = this;
 		if (!DebugManager.Instance.isDebug || !String.IsNullOrEmpty(DebugManager.Instance.sceneName))
 			SceneManager.LoadScene(LastScene, LoadSceneMode.Additive);
 	}

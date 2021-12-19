@@ -719,7 +719,10 @@ MonoBehaviour:
   moveForce: 1
   jumpForce: 400
   cmdTimer: 0
+  jumpTimer: 0
+  jumpTimerSet: 0
   scale: 1
+  isJumpAuto: 0
   keyButton: {fileID: 8929599983529302035}
   tf: {fileID: 3422038026874187423}
   text: {fileID: 5878523231156299541}

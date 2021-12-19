@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -56,60 +58,15 @@ public class Panzee : MonoBehaviour, ISelectable
 		Vector2 v = Random.insideUnitCircle;
 		rb.velocity = v;
 	}
-
-	public void SetCommand(Command command) {
-        this.command = command;
-        isJumpAuto = false;
-	}
-
-    public void SetText(string text) {
-        this.text.text = text;
-        GameObject obj = this.text.gameObject;
-        if (!obj.activeSelf)
-            StartCoroutine(TextCoroutine(obj, 3));
-        else
-            textTime = 3;
-    }
-
-    IEnumerator TextCoroutine(GameObject obj, float t) {
-        obj.SetActive(true);
-        textTime = t;
-        do {
-            yield return null;
-            textTime -= Time.deltaTime;
-        } while(textTime > 0);
-
-        obj.SetActive(false);
-        yield break;
-    }
-
-    public void Damage(int damage) {
-        Debug.Log("Damaged");
-        currentHp -= damage;
-        if (currentHp <= 0)
-            OnDie();
-        else {
-            float s = 0.33f * currentHp;
-            hpRenderer.transform.localScale = new Vector3(s, 1, 1);
-            hpRenderer.color = hpColor[3 - currentHp];
-        }
-    }
-
-	private void OnDie()
-	{
-		Debug.Log("Die");
-		if (Wakta.Instance.selected != null && Wakta.Instance.selected.Equals(this)) {
-			Wakta.Instance.selected = null;
-			CameraManager.Instance.FocusOut();
-		}
-		rb.velocity = Vector2.zero;
-		gameObject.SetActive(false);
-	}
-
+	
 	void Update()
 	{
 		if (tf.position.y <= -20)
 			OnDie();
+		if (textTime > 0)
+			textTime -= Time.deltaTime;
+		else
+			text.gameObject.SetActive(false);
 	}
 
 	private void LateUpdate()
@@ -118,22 +75,7 @@ public class Panzee : MonoBehaviour, ISelectable
 		pos.z = pos.x * -0.001f;
 		tf.position = pos;
 	}
-
-	public void Respawn()
-	{
-		rb.velocity = Vector2.zero;
-		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
-		tf.rotation = Quaternion.identity;
-		SetCommand(Command.Wait);
-	}
-
-	public static void RespawnAll()
-	{
-		for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
-			PanzeeManager.Instance.panzeeList[i].Respawn();
-		}
-	}
-
+	
 	void FixedUpdate()
 	{
 		if (cmdTimer > 0) cmdTimer -= Time.fixedDeltaTime;
@@ -171,6 +113,12 @@ public class Panzee : MonoBehaviour, ISelectable
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
                 }
+
+                if (cmdTimer <= 0)
+                {
+	                lastCommand = command;
+	                command = Command.Stop;
+                }
                 rb.velocity = new Vector2(moveForce * (command == Command.RightRun ? runSpeed : walkSpeed), rb.velocity.y);
                 break;
             case Command.Left: case Command.LeftRun:
@@ -180,6 +128,11 @@ public class Panzee : MonoBehaviour, ISelectable
 					text.transform.localScale = tf.localScale;
 					keyButton.transform.localScale = tf.localScale;
 				}
+                if (cmdTimer <= 0)
+                {
+	                lastCommand = command;
+	                command = Command.Stop;
+                }
                 rb.velocity = new Vector2(-moveForce * (command == Command.LeftRun ? runSpeed : walkSpeed), rb.velocity.y);
                 break;
             case Command.Stop: case Command.Wait:
@@ -192,6 +145,67 @@ public class Panzee : MonoBehaviour, ISelectable
         }
 
 		lastCommand = command;
+	}
+
+	public void SetCommand(Command command) {
+        this.command = command;
+        isJumpAuto = false;
+	}
+
+    public void SetText(string text) {
+        this.text.text = text;
+        StringBuilder sb = new StringBuilder("[");
+        sb.Append(keyButton.text).Append(']').Append(name).Append(':').Append(text);
+        ChatManager.Instance.AddText(sb.ToString());
+        this.text.gameObject.SetActive(true);
+        textTime = 7;
+    }
+
+    public void Damage(int damage) {
+        Debug.Log("Damaged");
+        currentHp -= damage;
+        if (currentHp <= 0)
+            OnDie();
+        else {
+            float s = 0.33f * currentHp;
+            hpRenderer.transform.localScale = new Vector3(s, 1, 1);
+            hpRenderer.color = hpColor[3 - currentHp];
+        }
+    }
+
+	private void OnDie()
+	{
+		Debug.Log("Die");
+		if (Wakta.Instance.selected != null && Wakta.Instance.selected.Equals(this)) {
+			Wakta.Instance.selected = null;
+			CameraManager.Instance.FocusOut();
+		}
+		rb.velocity = Vector2.zero;
+		RIPManager.Instance.SpawnRIP(this, text.text);
+		gameObject.SetActive(false);
+		
+	}
+
+	public void Suicide(string lastWord) {
+		Debug.Log("Suicide");
+		OnDie();
+	}
+
+	
+
+	public void Respawn()
+	{
+		rb.velocity = Vector2.zero;
+		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		tf.rotation = Quaternion.identity;
+		SetCommand(Command.Wait);
+	}
+
+	public static void RespawnAll()
+	{
+		for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
+			PanzeeManager.Instance.panzeeList[i].Respawn();
+		}
 	}
 
 	private bool isApplicationQuitting;

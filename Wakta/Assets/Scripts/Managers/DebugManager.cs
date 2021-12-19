@@ -26,6 +26,7 @@ public class DebugManager : MonoSingleton<DebugManager>
             }
         }
         if(Wakta.Instance.selected != null && !Wakta.Instance.selected.Equals(Wakta.Instance)) {
+	        (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().cmdTimer = 9999;
             if (Input.GetKeyDown(KeyCode.A))
                 (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>().SetCommand(!Input.GetKey(KeyCode.RightShift) ? Panzee.Command.Left : Panzee.Command.LeftRun);
             else if (Input.GetKeyDown(KeyCode.D))
@@ -34,8 +35,8 @@ public class DebugManager : MonoSingleton<DebugManager>
             {
 	            Panzee panzee = (Wakta.Instance.selected as MonoBehaviour).GetComponent<Panzee>();
 	            panzee.SetCommand(Panzee.Command.Jump);
-	            if (Input.GetKey(KeyCode.RightShift))
-	            {
+	            if (Input.GetKey(KeyCode.RightShift)) {
+		            panzee.cmdTimer = 0;
 		            panzee.isJumpAuto = true;
 		            panzee.jumpTimer = 0;
 		            panzee.jumpTimerSet = 0.5f;

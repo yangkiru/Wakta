@@ -1,29 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour {
-    private static T instance = null;
-	public static bool IsInstance { get { return instance != null; } }
-	public static T Instance {
-        get {
-			T[] temp = FindObjectsOfType(typeof(T)) as T[];
-			if (temp.Length == 0) {
-				instance = new GameObject("@" + typeof(T).ToString(),
-										   typeof(T)).AddComponent<T>();
-			} else if (instance == null) {
-				instance = temp[0];
-			} else {
-				for (int i = 0; i < temp.Length; i++) {
-					if (instance != temp[i])
-						Destroy(temp[i].gameObject);
-				}
-			}
-			return instance;
+using System.Collections.Generic;
+ 
+public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>{
+ 
+    protected static T _instance = null;
+    public static T Instance
+    {
+        get
+        {           
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType(typeof(T)) as T;
+ 
+                if (_instance == null)
+                    _instance = new GameObject(typeof(T).ToString()).AddComponent<T>();                                        
+            }
+            return _instance;
         }
-		set {
-			if (instance == null) instance = value;
-			value.transform.SetParent(null);
-			DontDestroyOnLoad(instance.gameObject);
-		}
-	}
+    }
+ 
+    protected void Awake(){ _instance = this.transform.GetComponent<T>(); }
+    public virtual void Init(){}
+    public virtual void Destroy(){ Destroy(this);}
+ 
 }
