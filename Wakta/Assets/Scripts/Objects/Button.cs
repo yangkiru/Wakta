@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,26 +17,27 @@ public class Button : MonoBehaviour
 	public bool isPassEnter;
 	[Tooltip("OnTriggerExit2D를 무시")]
 	public bool isPassExit;
-	private Animator anim;
 
-    public LayerMask pushableLayer;
+	public LayerMask pushableLayer;
 
     public UnityEvent onPushDown;
     public UnityEvent onPushUp;
 
-    private void Awake() {
-        anim = GetComponent<Animator>();
-    }
+    public SpriteRenderer spriteRenderer;
+    public Sprite pushUpSpr;
+    public Sprite pushDownSpr;
+
+    private int pushed = 0;
     public void PushDown() {
-        //Debug.Log("PushDown");
-        anim.SetTrigger("pushDown");
+        Debug.Log("PushDown");
+        spriteRenderer.sprite = pushDownSpr;
         isPush = true;
         onPushDown.Invoke();
     }
 
     public void PushUp() {
-        //Debug.Log("PushUp");
-        anim.SetTrigger("pushUp");
+        Debug.Log("PushUp");
+        spriteRenderer.sprite = pushUpSpr;
         isPush = false;
         onPushUp.Invoke();
     }
@@ -48,20 +50,26 @@ public class Button : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision) {
 		//Debug.Log("Enter");
+		pushed++;
 		if (!isPassEnter && GameManager.IsInLayerMask(collision.gameObject.layer, pushableLayer)) {
-			if (isToggle) Toggle();
-			else if(!isPush)
-				PushDown();
+			if (pushed > 0) {
+				if (isToggle) Toggle();
+				else if (!isPush)
+					PushDown();
+			}
 		}
-    }
+	}
 
-    private void OnTriggerExit2D(Collider2D collision) {
+	private void OnTriggerExit2D(Collider2D collision) {
 		//Debug.Log("Exit");
+		pushed--;
 		if (!isPassExit && GameManager.IsInLayerMask(collision.gameObject.layer, pushableLayer)) {
-			if (isToggle)
-				Toggle();
-			else if (isPush)
-				PushUp();
+			if (pushed <= 0) {
+				if (isToggle)
+					Toggle();
+				else if (isPush)
+					PushUp();
+			}
 		}
     }
 }

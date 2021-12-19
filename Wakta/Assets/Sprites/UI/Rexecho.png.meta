@@ -155,7 +155,7 @@ TextureImporter:
         height: 23
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 7, y: 10, z: 7, w: 3}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -171,12 +171,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 26
-        y: 120
+        y: 126
         width: 36
-        height: 42
+        height: 36
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 6, y: 6, z: 6, w: 6}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -192,11 +192,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 63
-        y: 138
+        y: 132
         width: 12
         height: 12
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5833334}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -313,6 +313,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Rexecho_10
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 181
+        width: 6
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45bd700f3dff3574f8f334afa2b9c962
+      internalID: -1336223106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rexecho_11
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 181
+        width: 6
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4d53764ae434dd4ea060457229b3f8f
+      internalID: -961882406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -328,8 +370,10 @@ TextureImporter:
       Rexecho_5: -2143163555
       Rexecho_0: 107358576
       Rexecho_2: -704434727
+      Rexecho_10: -1336223106
       Rexecho_3: -273655742
       Rexecho_9: -1465394235
+      Rexecho_11: -961882406
       Rexecho_8: -1474373525
       Rexecho_1: 1182413959
       Rexecho_7: 1505179190

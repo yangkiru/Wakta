@@ -10,24 +10,28 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
     public List<Panzee> panzeeList = new List<Panzee>();
 	public Dictionary<int, Panzee> panzeeDictInOrder = new Dictionary<int, Panzee>();
     public int maxPanzee = 5;
+    [SerializeField]
+    private bool isSpawnable = false;
 
 
     #region DEBUG
     private int unknownCount = 0;
     #endregion
-
     private void Awake() {
         for (int i = 0; i < 10; i++) {
             panzeePool.EnqueueObjectPool(Instantiate(panzeeObj));
         }
     }
 
-    [ContextMenu("SpawnPanzee")]
+    public void SetSpawnable(bool value) {
+	    isSpawnable = value;
+    }
     public void SpawnPanzee() {
         SpawnPanzee(string.Format("UNKNOWN{0}", unknownCount++), "");
     }
 
     public void SpawnPanzee(string name, string greeting) {
+	    if (!isSpawnable) return;
         Panzee panzee = panzeePool.DequeueObjectPool().GetComponent<Panzee>();
         panzeeDict.Add(name, panzee);
         panzeeList.Add(panzee);

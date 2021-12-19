@@ -22,7 +22,7 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 
 	public Animator animator;
 	public Animator atkEffAnimator;
-
+	
 	private void Start()
 	{
 		Respawn();

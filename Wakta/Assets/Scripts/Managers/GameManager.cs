@@ -20,7 +20,7 @@ public class GameManager : MonoSingleton<GameManager>
 	public static string LastScene {
 		get {
 			string value = PlayerPrefs.GetString("lastScene");
-			if (value.CompareTo(string.Empty) == 0) return "tutorial";
+			if (value.CompareTo(string.Empty) == 0) return "Tutorial";
 			else return value;
 		}
 		set {

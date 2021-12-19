@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Panzee : MonoBehaviour, ISelectable
@@ -16,10 +17,9 @@ public class Panzee : MonoBehaviour, ISelectable
 	public LineRenderer neckLine;
 	public PointEffector2D gravity;
 
-    public int maxHp = 3;
-    public int currentHp = 3;
-    public SpriteRenderer hpRenderer;
-    public Color[] hpColor;
+    public int maxHp = 5;
+    public int currentHp = 5;
+    public Image hpRenderer;
 
     public float walkSpeed = 1;
 	public float runSpeed = 2;
@@ -37,7 +37,7 @@ public class Panzee : MonoBehaviour, ISelectable
 
 	public TextMeshPro keyButton;
 	public Transform tf;
-	public TextMeshPro text;
+	public TextMeshProUGUI text;
 	public Rigidbody2D rb;
 
 	[SerializeField]
@@ -167,9 +167,8 @@ public class Panzee : MonoBehaviour, ISelectable
         if (currentHp <= 0)
             OnDie();
         else {
-            float s = 0.33f * currentHp;
-            hpRenderer.transform.localScale = new Vector3(s, 1, 1);
-            hpRenderer.color = hpColor[3 - currentHp];
+	        float s = (float)currentHp / maxHp;
+	        hpRenderer.fillAmount = s;
         }
     }
 
@@ -220,8 +219,7 @@ public class Panzee : MonoBehaviour, ISelectable
         PanzeeManager.Instance.panzeeList.Remove(this);
         PanzeeManager.Instance.panzeeDict.Remove(name);
         currentHp = maxHp;
-        hpRenderer.color = hpColor[0];
-        hpRenderer.transform.localScale = Vector3.one;
+        hpRenderer.fillAmount = 1;
         name = "UNKNOWN";
         CameraManager.Instance.cineGroup.RemoveMember(tf);
 		int i;
