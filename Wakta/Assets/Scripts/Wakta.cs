@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 public class Wakta : MonoSingleton<Wakta>, ISelectable
 {
     public int damage = 1;
-
-    private Panzee currentPanzee;
+    
     public Transform tf;
     public Rigidbody2D rb;
 
@@ -21,7 +20,11 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	public List<Panzee> insidePanzee = new List<Panzee>();
 
 	public Animator animator;
-	public Animator atkEffAnimator;
+
+	public bool IsPause {
+		get { return isPause; }
+	}
+	private bool isPause;
 	
 	private void Start()
 	{
@@ -61,21 +64,26 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 
         if (Input.GetKeyDown(KeyCode.Space)) { //호치
             if (selected != null && !selected.Equals(this)) {
-                //Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
-                //panzee.Damage(damage);
-                //attackSound.PlayOneShot(attackClips[Random.Range(0, attackClips.Length)]);
-                //panzee.impulseSource.GenerateImpulse();
-                animator.SetTrigger("attack");
-                //atkEffAnimator.gameObject.SetActive(true);
+                Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
+                if(insidePanzee.Contains(panzee))
+	                animator.SetTrigger("attack");
             }
         }
 
 		if(Input.GetKeyDown(KeyCode.LeftShift)) { //연결
 			if (selected != null && !selected.Equals(this)) {
 				Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
-				panzee.gravity.enabled = !panzee.gravity.enabled;
-				if (insidePanzee.Contains(panzee)) {
-					panzee.neckLine.gameObject.SetActive(panzee.gravity.enabled);
+
+				if (!panzee.joint.enabled && insidePanzee.Contains(panzee)) {
+					panzee.joint.enabled = true;
+					
+					panzee.neckLine.gameObject.SetActive(true);
+					if (panzee.joint.connectedBody == null)
+						panzee.joint.connectedBody = rb;
+				}
+				else {
+					panzee.joint.enabled = false;
+					panzee.neckLine.gameObject.SetActive(false);
 				}
 			}
 		}
@@ -92,6 +100,18 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 		Vector3 pos = tf.position;
 		pos.z = pos.x * -0.001f;
 		tf.position = pos;
+	}
+	
+	public void Pause() {
+		rb.velocity = Vector2.zero;
+		rb.isKinematic = true;
+		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		isPause = true;
+	}
+	
+	public void UnPause() {
+		rb.isKinematic = false;
+		isPause = false;
 	}
 
 	private void Select(int index) {
@@ -115,23 +135,17 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if(collision.CompareTag("Panzee")) {
-			//Debug.Log("Panzee In");
 			Panzee panzee = collision.GetComponent<Panzee>();
-			//if(!insidePanzee.Contains(panzee))
 			insidePanzee.Add(panzee);
-			if (panzee.gravity.enabled) {
-				panzee.neckLine.gameObject.SetActive(true);
-			}
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Panzee")) {
-			//Debug.Log("Panzee Out");
+			Debug.Log("Out");
 			Panzee panzee = collision.GetComponent<Panzee>();
 			insidePanzee.Remove(panzee);
-			panzee.neckLine.gameObject.SetActive(false);
 		}
 	}
 }

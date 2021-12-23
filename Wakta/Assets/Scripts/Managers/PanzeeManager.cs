@@ -7,9 +7,13 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
     public ObjectPool panzeePool;
     public GameObject panzeeObj;
     public Dictionary<string, Panzee> panzeeDict = new Dictionary<string, Panzee>();
+    public Dictionary<string, bool> banDict = new Dictionary<string, bool>();
     public List<Panzee> panzeeList = new List<Panzee>();
 	public Dictionary<int, Panzee> panzeeDictInOrder = new Dictionary<int, Panzee>();
     public int maxPanzee = 5;
+    public bool IsSpawnable {
+	    get { return isSpawnable; }
+    }
     [SerializeField]
     private bool isSpawnable = false;
 
@@ -33,17 +37,7 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
     public void SpawnPanzee(string name, string greeting) {
 	    if (!isSpawnable) return;
         Panzee panzee = panzeePool.DequeueObjectPool().GetComponent<Panzee>();
-        panzeeDict.Add(name, panzee);
-        panzeeList.Add(panzee);
-		for(int i = 1; i <= maxPanzee; i++) {
-			Panzee temp;
-			panzeeDictInOrder.TryGetValue(i, out temp);
-			if (temp == null) {
-				panzeeDictInOrder[i] = panzee;
-				KeyUpdate(i);
-				break;
-			}
-		}
+        AddPanzee(name, panzee);
 		Vector2 wakPos = Wakta.Instance.tf.position;
 		Vector3 pos = wakPos;
 		pos.z = -1;
@@ -52,8 +46,23 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
 
         panzee.gameObject.SetActive(true);
         panzee.SetText(greeting);
-        CameraManager.Instance.cineGroup.AddMember(panzee.tf, 1f, 3f);
-	}
+    }
+
+    public void AddPanzee(string name, Panzee panzee) {
+	    panzeeDict.Add(name, panzee);
+	    panzeeList.Add(panzee);
+	    CameraManager.Instance.cineGroup.AddMember(panzee.tf, 1f, 3f);
+	    
+	    for(int i = 1; i <= maxPanzee; i++) {
+		    Panzee temp;
+		    panzeeDictInOrder.TryGetValue(i, out temp);
+		    if (temp == null) {
+			    panzeeDictInOrder[i] = panzee;
+			    KeyUpdate(i);
+			    break;
+		    }
+	    }
+    }
 
 	public void KeyUpdate(int i)
 	{

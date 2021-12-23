@@ -10,7 +10,8 @@ public class DebugManager : MonoSingleton<DebugManager>
 
 	private void Awake()
 	{
-		if (sceneName.CompareTo(string.Empty) != 0) GameManager.LastScene = sceneName;
+		if (isDebug && sceneName.CompareTo(string.Empty) != 0) GameManager.LastScene = sceneName;
+			
 	}
 
 	private void Update() {

@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 1674465402278941131}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.79, y: 0.79, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6795705396566856422}
@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: 0}
-  m_SizeDelta: {x: 32, y: 72}
+  m_AnchoredPosition: {x: -48, y: 0}
+  m_SizeDelta: {x: 24, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4898806360360207635
 CanvasRenderer:
@@ -306,7 +306,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3422038025309950259}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06290007, y: 0.6875, z: 0}
+  m_LocalPosition: {x: -0.06, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -451,7 +451,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 20462260bb860654b9ece295b6f1494e, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -514,9 +514,9 @@ GameObject:
   - component: {fileID: 3422038026874187423}
   - component: {fileID: 3422038026874187392}
   - component: {fileID: 3422038026874187393}
-  - component: {fileID: 1100804934373667221}
-  - component: {fileID: 335519691756918657}
-  m_Layer: 9
+  - component: {fileID: 5856724063743886103}
+  - component: {fileID: 6016214590803842823}
+  m_Layer: 3
   m_Name: Panzee
   m_TagString: Panzee
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ MonoBehaviour:
   impulseSource: {fileID: 8952481356768960939}
   groundCheck: {fileID: 3422038026103642471}
   neckLine: {fileID: 3422038027115265596}
-  gravity: {fileID: 1100804934373667221}
+  joint: {fileID: 5856724063743886103}
   maxHp: 5
   currentHp: 5
   hpRenderer: {fileID: 1806173199601329298}
@@ -575,6 +575,7 @@ MonoBehaviour:
   isJumpAuto: 0
   keyButton: {fileID: 8929599983529302035}
   tf: {fileID: 3422038026874187423}
+  textBubble: {fileID: 4367004398585866393}
   text: {fileID: 4090519715306065294}
   rb: {fileID: 3422038026874187393}
   command: 0
@@ -600,27 +601,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!250 &1100804934373667221
-PointEffector2D:
+--- !u!232 &5856724063743886103
+DistanceJoint2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3422038026874187395}
   m_Enabled: 0
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  m_ForceMagnitude: -30
-  m_ForceVariation: 0
-  m_DistanceScale: 1
-  m_ForceSource: 0
-  m_ForceTarget: 0
-  m_ForceMode: 0
-  m_Drag: 5
-  m_AngularDrag: 0
---- !u!58 &335519691756918657
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 1.18}
+  m_AutoConfigureDistance: 0
+  m_Distance: 4
+  m_MaxDistanceOnly: 1
+--- !u!58 &6016214590803842823
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -631,11 +631,11 @@ CircleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
-  m_Radius: 8
+  m_Radius: 2
 --- !u!1 &3422038027115265599
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,8 +962,8 @@ RectTransform:
   m_GameObject: {fileID: 7251653468214769644}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 0.79}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8712178443809956553}
   m_RootOrder: 0
@@ -971,7 +971,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 32, y: 72}
+  m_SizeDelta: {x: 24, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7831210892739494526
 CanvasRenderer:

@@ -7,6 +7,9 @@ public class FadeManager : MonoSingleton<FadeManager>
 {
 	public RawImage image;
 
+	public void Start() {
+		image.enabled = true;
+	}
 	public void FadeIn(float t, bool ignoreTimescale = true)
 	{
 		image.canvasRenderer.SetAlpha(1);

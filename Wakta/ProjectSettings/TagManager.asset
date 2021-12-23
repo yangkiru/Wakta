@@ -6,11 +6,12 @@ TagManager:
   tags:
   - Panzee
   - Wakta
+  - Inside
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Inside
   - Water
   - UI
   - 

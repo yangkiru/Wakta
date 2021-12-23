@@ -10,8 +10,13 @@ public class SceneActivateManager : MonoBehaviour
 	public bool isDontDestroy = false;
 	public LoadSceneMode mode;
 	public string sceneName = string.Empty;
-    IEnumerator Start()
-    {
+    IEnumerator Start() {
+	    Wakta.Instance.Pause();
+	    for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
+		    if (PanzeeManager.Instance.panzeeList[i].gameObject.activeSelf) {
+			    PanzeeManager.Instance.panzeeList[i].Pause();
+		    }
+	    }
 		FadeManager.Instance.FadeIn(1);
 		AsyncOperation async = SceneManager.LoadSceneAsync(sceneName.CompareTo(string.Empty) == 0 ? GameManager.LastScene : sceneName, mode);
 		async.allowSceneActivation = false;
@@ -23,12 +28,12 @@ public class SceneActivateManager : MonoBehaviour
 			t -= Time.deltaTime;
 		} while (t >= 0 || !isAutoQuit);
 
-		FadeManager.Instance.FadeOut(1);
 		t = 1;
 		do {
 			yield return null;
 			t -= Time.deltaTime;
 		} while (t >= 0);
 		async.allowSceneActivation = true;
-	}
+		yield return null;
+    }
 }

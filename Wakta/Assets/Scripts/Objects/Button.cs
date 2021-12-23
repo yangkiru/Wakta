@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class Button : MonoBehaviour
 {
-    public bool IsPush { get { return IsPush; } }
+    public bool IsPush { get { return isPush; } }
     [SerializeField]
     private bool isPush;
 	[Tooltip("isPassEnter 또는 isPassExit를 활성화 해야함")]

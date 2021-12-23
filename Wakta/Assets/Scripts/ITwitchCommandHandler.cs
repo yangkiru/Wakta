@@ -35,6 +35,7 @@ public static class TwitchCommands {
     public static readonly string CmdRightJump = "e";
     public static readonly string CmdRightJumpRun = "E";
     public static readonly string CmdSuicide = "퇴장";
+    public static readonly string CmdBan = "입장";
 }
 
 /*EXAMPLES - This is how I would impletement this interface and create classes with actual command logic
@@ -214,6 +215,19 @@ public class TwitchSuicideCommand : ITwitchCommandHandler {
             string lastWord = data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdSuicide).Length).TrimStart(' ');
             panzee.Suicide(lastWord);
         }
+    }
+}
+
+public class TwitchBanCommand : ITwitchCommandHandler {
+    public void HandleCommand(TwitchCommandData data) {
+        if (!PanzeeManager.Instance.IsSpawnable) return;
+        Panzee panzee = null;
+        PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (panzee != null) {
+            string lastWord = data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdSuicide).Length).TrimStart(' ');
+            panzee.Suicide("!입장을 쳐서 밴당했습니다");
+        }
+        PanzeeManager.Instance.banDict.Add(data.Author, true);
     }
 }
 

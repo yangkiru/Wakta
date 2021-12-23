@@ -17,6 +17,7 @@ public class CameraManager : MonoSingleton<CameraManager>
 		cineGroup = FindObjectOfType<CinemachineTargetGroup>();
         vcam = FindObjectOfType<CinemachineVirtualCamera>();
         cineFramTrans = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //cineFramTrans.m_GroupFramingSize -= 0.1f;
     }
 
 	public void Focus(Transform target) {
@@ -34,10 +35,6 @@ public class CameraManager : MonoSingleton<CameraManager>
         }
     }
 
-    public void Shake() {
-        
-    }
-
     public void Zoom(float amount)
     {
         cineFramTrans.m_GroupFramingSize = Math.Clamp(cineFramTrans.m_GroupFramingSize+amount, zoomLimit.x, zoomLimit.y);
@@ -46,7 +43,7 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     public void Update()
     {
-        if(Input.GetKey(KeyCode.KeypadPlus)) Zoom(zoomSpd);
-        else if (Input.GetKey(KeyCode.KeypadMinus)) Zoom(-zoomSpd);
+        if(Input.GetKey(KeyCode.KeypadPlus) || Input.GetKey(KeyCode.Equals)) Zoom(zoomSpd * Time.deltaTime);
+        else if (Input.GetKey(KeyCode.KeypadMinus) || Input.GetKey(KeyCode.Minus)) Zoom(-zoomSpd * Time.deltaTime);
     }
 }

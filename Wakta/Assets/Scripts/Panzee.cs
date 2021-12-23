@@ -9,13 +9,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class Panzee : MonoBehaviour, ISelectable
-{
+public class Panzee : MonoBehaviour, ISelectable {
+	[SerializeField]
+	private bool isDev = false;
     public CinemachineImpulseSource impulseSource;
     public Transform groundCheck;
 
 	public LineRenderer neckLine;
-	public PointEffector2D gravity;
+	public DistanceJoint2D joint;
 
     public int maxHp = 5;
     public int currentHp = 5;
@@ -37,6 +38,7 @@ public class Panzee : MonoBehaviour, ISelectable
 
 	public TextMeshPro keyButton;
 	public Transform tf;
+	public RectTransform textBubble;
 	public TextMeshProUGUI text;
 	public Rigidbody2D rb;
 
@@ -47,6 +49,13 @@ public class Panzee : MonoBehaviour, ISelectable
 	private float textTime;
 	[SerializeField]
     private Animator animator;
+
+    private bool isInit = false;
+
+    public bool IsPause {
+	    get { return isPause; }
+    }
+    private bool isPause = false;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -59,26 +68,23 @@ public class Panzee : MonoBehaviour, ISelectable
 		rb.velocity = v;
 	}
 	
-	void Update()
-	{
-		if (tf.position.y <= -20)
-			OnDie();
-		if (textTime > 0)
-			textTime -= Time.deltaTime;
-		else
-			text.gameObject.SetActive(false);
-	}
-
 	private void LateUpdate()
 	{
 		Vector3 pos = tf.position;
 		pos.z = pos.x * -0.001f;
 		tf.position = pos;
 	}
-	
-	void FixedUpdate()
+	void Update()
 	{
-		if (cmdTimer > 0) cmdTimer -= Time.fixedDeltaTime;
+		if(!isInit)
+			isInit = true;
+		if (tf.position.y <= -20)
+			OnDie();
+		if (textTime > 0)
+			textTime -= Time.deltaTime;
+		else
+			textBubble.gameObject.SetActive(false);
+		if (cmdTimer > 0) cmdTimer -= Time.deltaTime;
 		RaycastHit2D[] hits = Physics2D.BoxCastAll(groundCheck.position, groundCheck.localScale, 0, Vector2.zero, 0, GameManager.Instance.jumpableLayer);// | GameManager.Instance.panzeeLayer);
 		bool isGround = false;
 		for (var index = 0; index < hits.Length; index++)
@@ -146,6 +152,18 @@ public class Panzee : MonoBehaviour, ISelectable
 
 		lastCommand = command;
 	}
+	
+	public void Pause() {
+		rb.velocity = Vector2.zero;
+		rb.isKinematic = true;
+		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		isPause = true;
+	}
+	
+	public void UnPause() {
+		rb.isKinematic = false;
+		isPause = false;
+	}
 
 	public void SetCommand(Command command) {
         this.command = command;
@@ -153,11 +171,13 @@ public class Panzee : MonoBehaviour, ISelectable
 	}
 
     public void SetText(string text) {
+	    if (text == String.Empty) return;
         this.text.text = text;
         StringBuilder sb = new StringBuilder("[");
         sb.Append(keyButton.text).Append(']').Append(name).Append(':').Append(text);
         ChatManager.Instance.AddText(sb.ToString());
-        this.text.gameObject.SetActive(true);
+        this.textBubble.gameObject.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(this.textBubble);
         textTime = 7;
     }
 
@@ -180,6 +200,7 @@ public class Panzee : MonoBehaviour, ISelectable
 			CameraManager.Instance.FocusOut();
 		}
 		rb.velocity = Vector2.zero;
+		joint.enabled = false;
 		RIPManager.Instance.SpawnRIP(this, text.text);
 		gameObject.SetActive(false);
 		
@@ -203,32 +224,45 @@ public class Panzee : MonoBehaviour, ISelectable
 	public static void RespawnAll()
 	{
 		for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
-			PanzeeManager.Instance.panzeeList[i].Respawn();
+			if(PanzeeManager.Instance.panzeeList[i].gameObject.activeSelf)
+				PanzeeManager.Instance.panzeeList[i].Respawn();
 		}
 	}
-
-	private bool isApplicationQuitting;
 	private static readonly int Speed = Animator.StringToHash("speed");
 
+	private bool isQuit = false;
+
+	private void OnApplicationQuit() {
+		isQuit = true;
+	}
+
 	private void OnDisable() {
-        if (isApplicationQuitting) return;
-        animator.SetFloat("speed", 0);
-        command = Command.Wait;
-        lastCommand = Command.Wait;
-        text.gameObject.SetActive(false);
-        PanzeeManager.Instance.panzeeList.Remove(this);
-        PanzeeManager.Instance.panzeeDict.Remove(name);
-        currentHp = maxHp;
-        hpRenderer.fillAmount = 1;
-        name = "UNKNOWN";
-        CameraManager.Instance.cineGroup.RemoveMember(tf);
-		int i;
-		int.TryParse(keyButton.text, out i);
-		PanzeeManager.Instance.panzeeDictInOrder[i] = null;
-		PanzeeManager.Instance.panzeePool.EnqueueObjectPool(gameObject);
+        if (isQuit || !isInit) return;
+        if (!isDev) {
+	        animator.SetFloat("speed", 0);
+	        command = Command.Wait;
+	        lastCommand = Command.Wait;
+	        text.gameObject.SetActive(false);
+
+	        currentHp = maxHp;
+	        hpRenderer.fillAmount = 1;
+	        name = "UNKNOWN";
+	        CameraManager.Instance.cineGroup.RemoveMember(tf);
+	        int i;
+	        int.TryParse(keyButton.text, out i);
+	        PanzeeManager.Instance.panzeeList.Remove(this);
+	        PanzeeManager.Instance.panzeeDict.Remove(name);
+	        PanzeeManager.Instance.panzeeDictInOrder[i] = null;
+	        PanzeeManager.Instance.panzeePool.EnqueueObjectPool(gameObject);
+        }
+
+        if (Wakta.Instance.selected.Equals(this)) Wakta.Instance.selected = null;
+		PanzeeManager.Instance.panzeeDict.Remove(name);
+		PanzeeManager.Instance.panzeeList.Remove(this);
+		int output;
+		if(int.TryParse(keyButton.text, out output))
+			PanzeeManager.Instance.panzeeDictInOrder.Remove(output);
     }
 
-    void OnApplicationQuit() {
-        isApplicationQuitting = true;
-    }
+
 }

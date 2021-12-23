@@ -40,7 +40,6 @@ public class TwitchChat : MonoBehaviour
     void Awake()
     {
         _instance = this;
-        DontDestroyOnLoad(this);
         Connect(credentials, new CommandCollection());
     }
 
@@ -124,8 +123,14 @@ public class TwitchChat : MonoBehaviour
                     // Fail Because It's Full
                     if (PanzeeManager.Instance.panzeeDict.Count >= PanzeeManager.Instance.maxPanzee)
                         return;
-                    else // Join
-                        PanzeeManager.Instance.SpawnPanzee(author, message);
+                    else {
+                        // Join
+                        bool isBan = false;
+                        
+                        if (!PanzeeManager.Instance.banDict.TryGetValue(author, out isBan))
+                            PanzeeManager.Instance.SpawnPanzee(author, message);
+                        
+                    }
                 }
                 else
                     panzee.SetText(message);
