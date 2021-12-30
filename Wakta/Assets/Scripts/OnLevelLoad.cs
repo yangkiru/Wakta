@@ -8,10 +8,11 @@ public class OnLevelLoad : MonoBehaviour
 	{
 		Wakta.Instance.Respawn();
 		Wakta.Instance.UnPause();
-		for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
-			if (PanzeeManager.Instance.panzeeList[i].gameObject.activeSelf) {
-				PanzeeManager.Instance.panzeeList[i].Respawn();
-				PanzeeManager.Instance.panzeeList[i].UnPause();
+		for (int i = 0; i < PanzeeManager.Instance.panzeeArray.Length; i++) {
+			Panzee panzee = PanzeeManager.Instance.panzeeArray[i];
+			if (panzee != null && panzee.gameObject.activeSelf) {
+				panzee.Respawn();
+				panzee.UnPause();
 			}
 		}
 		if (FadeManager.Instance != null)

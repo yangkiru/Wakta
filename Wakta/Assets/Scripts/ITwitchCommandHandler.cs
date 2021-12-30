@@ -38,18 +38,7 @@ public static class TwitchCommands {
     public static readonly string CmdBan = "입장";
 }
 
-/*EXAMPLES - This is how I would impletement this interface and create classes with actual command logic
 
-!message command
-public class TwitchDisplayMessageCommand : ITwitchCommandHandler {
-    public void HandleCommand(TwitchCommandData data){
-        Debug.Log($"<color=cyan>Raw Message:{data.Message}</color>");
-
-        // strip the !message command from the message and trim the leading whitespace
-        string actualMessage = data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdMessage).Length).TrimStart(' ');
-        Debug.Log($"<color=cyan>{data.Author} says {actualMessage}</color>");
-    }
-}*/
 
 // !a command
 public class TwitchLeftCommand : ITwitchCommandHandler
@@ -117,8 +106,9 @@ public class TwitchJumpCommand : ITwitchCommandHandler
         Panzee panzee = null;
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
         if (panzee != null) {
-            bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdJump).Length).TrimStart(' '), out panzee.cmdTimer);
-            if (!success) panzee.cmdTimer = 0;
+            bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdJump).Length).TrimStart(' '), out panzee.jumpTimer);
+            if (!success) panzee.jumpTimer = 0;
+            panzee.jumpTimerSet = 9999;
             panzee.SetCommand(Panzee.Command.Jump);
         }
     }
@@ -132,10 +122,10 @@ public class TwitchJumpAutoCommand : ITwitchCommandHandler
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
         if (panzee != null)
         {
-            panzee.isJumpAuto = true;
-            panzee.jumpTimer = 0;
             bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdJumpAuto).Length).TrimStart(' '), out panzee.jumpTimerSet);
             if (!success) panzee.jumpTimerSet = 0.5f;
+            panzee.jumpTimer = 0;
+            panzee.SetCommand(Panzee.Command.JumpAuto);
         }
     }
 }
@@ -148,8 +138,6 @@ public class TwitchStopCommand : ITwitchCommandHandler
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
 
         if (panzee != null) {
-            bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdStop).Length).TrimStart(' '), out panzee.cmdTimer);
-            if (!success) panzee.cmdTimer = 0;
             panzee.SetCommand(Panzee.Command.Stop);
         }
     }
@@ -163,6 +151,8 @@ public class TwitchLeftJumpCommand : ITwitchCommandHandler
         if (panzee != null) {
             bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdLeftJump).Length).TrimStart(' '), out panzee.cmdTimer);
             if (!success) panzee.cmdTimer = 9999;
+            panzee.jumpTimer = 0;
+            panzee.jumpTimerSet = 9999;
             panzee.SetCommand(Panzee.Command.LeftJump);
         }
     }
@@ -176,6 +166,8 @@ public class TwitchLeftJumpRunCommand : ITwitchCommandHandler
         if (panzee != null) {
             bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdLeftJumpRun).Length).TrimStart(' '), out panzee.cmdTimer);
             if (!success) panzee.cmdTimer = 9999;
+            panzee.jumpTimer = 0;
+            panzee.jumpTimerSet = 9999;
             panzee.SetCommand(Panzee.Command.LeftJumpRun);
         }
     }
@@ -189,6 +181,8 @@ public class TwitchRightJumpCommand : ITwitchCommandHandler
         if (panzee != null) {
             bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdRightJump).Length).TrimStart(' '), out panzee.cmdTimer);
             if (!success) panzee.cmdTimer = 9999;
+            panzee.jumpTimer = 0;
+            panzee.jumpTimerSet = 9999;
             panzee.SetCommand(Panzee.Command.RightJump);
         }
     }
@@ -202,6 +196,8 @@ public class TwitchRightJumpRunCommand : ITwitchCommandHandler
         if (panzee != null) {
             bool success = float.TryParse(data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdRightJumpRun).Length).TrimStart(' '), out panzee.cmdTimer);
             if (!success) panzee.cmdTimer = 9999;
+            panzee.jumpTimer = 0;
+            panzee.jumpTimerSet = 9999;
             panzee.SetCommand(Panzee.Command.RightJumpRun);
         }
     }
@@ -251,6 +247,7 @@ public class CommandCollection {
         _commands.Add(TwitchCommands.CmdRightJump, new TwitchRightJumpCommand());
         _commands.Add(TwitchCommands.CmdRightJumpRun, new TwitchRightJumpRunCommand());
         _commands.Add(TwitchCommands.CmdSuicide, new TwitchSuicideCommand());
+        _commands.Add(TwitchCommands.CmdBan, new TwitchBanCommand());
     }
 
     public bool HasCommand(string command){

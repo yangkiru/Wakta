@@ -13,6 +13,10 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Awake()
 	{
+		if (!PlayerPrefs.HasKey("2021Reset")) {
+			PlayerPrefs.SetInt("2021Reset", 1);
+			PlayerPrefs.SetString("lastScene", "Tutorial1");
+		}
 		if (!DebugManager.Instance.isDebug || !String.IsNullOrEmpty(DebugManager.Instance.sceneName))
 			SceneManager.LoadScene(LastScene, LoadSceneMode.Additive);
 	}

@@ -213,9 +213,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 108
-        width: 13
-        height: 7
+        y: 86
+        width: 21
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -233,10 +233,10 @@ TextureImporter:
       name: Rexecho_6
       rect:
         serializedVersion: 2
-        x: 15
-        y: 108
-        width: 16
-        height: 9
+        x: 24
+        y: 86
+        width: 21
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -254,10 +254,10 @@ TextureImporter:
       name: Rexecho_7
       rect:
         serializedVersion: 2
-        x: 32
-        y: 109
-        width: 13
-        height: 5
+        x: 47
+        y: 86
+        width: 21
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -275,10 +275,10 @@ TextureImporter:
       name: Rexecho_8
       rect:
         serializedVersion: 2
-        x: 46
-        y: 109
-        width: 12
-        height: 6
+        x: 70
+        y: 86
+        width: 21
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -296,10 +296,10 @@ TextureImporter:
       name: Rexecho_9
       rect:
         serializedVersion: 2
-        x: 59
-        y: 107
-        width: 14
-        height: 12
+        x: 93
+        y: 86
+        width: 21
+        height: 21
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -367,6 +367,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Rexecho_4: 193156930
+      Rexecho_12: 1726275483
       Rexecho_5: -2143163555
       Rexecho_0: 107358576
       Rexecho_2: -704434727

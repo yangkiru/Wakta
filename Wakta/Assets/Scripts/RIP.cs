@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class RIP : MonoBehaviour {
     private float t;
-    public TextMeshPro text;
+    public RectTransform textBubble;
+    public TextMeshProUGUI text;
 
     private void OnEnable() {
         t = 7;

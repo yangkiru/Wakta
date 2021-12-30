@@ -49,9 +49,9 @@ public class Button : MonoBehaviour
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision) {
-		//Debug.Log("Enter");
-		pushed++;
 		if (!isPassEnter && GameManager.IsInLayerMask(collision.gameObject.layer, pushableLayer)) {
+			Debug.Log("Enter");
+			pushed++;
 			if (pushed > 0) {
 				if (isToggle) Toggle();
 				else if (!isPush)
@@ -61,9 +61,9 @@ public class Button : MonoBehaviour
 	}
 
 	private void OnTriggerExit2D(Collider2D collision) {
-		//Debug.Log("Exit");
-		pushed--;
 		if (!isPassExit && GameManager.IsInLayerMask(collision.gameObject.layer, pushableLayer)) {
+			Debug.Log("Exit");
+			pushed--;
 			if (pushed <= 0) {
 				if (isToggle)
 					Toggle();

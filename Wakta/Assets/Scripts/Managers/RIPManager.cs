@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RIPManager : MonoSingleton<RIPManager> {
     public ObjectPool RIPPool;
@@ -15,16 +16,17 @@ public class RIPManager : MonoSingleton<RIPManager> {
 
     public void SpawnRIP(Panzee target, string lastWord) {
         GameObject obj = RIPPool.DequeueObjectPool();
-        Debug.Log("SpawnRIP");
         Vector2 pos = target.transform.position;
-        pos.y += 2;
         obj.transform.position = pos;
+        RIP rip = obj.GetComponent<RIP>();
         if (!lastWord.Equals(String.Empty)) {
-            obj.GetComponent<RIP>().text.text = lastWord;
+            rip.text.text = lastWord;
         }
         else {
-            obj.GetComponent<RIP>().text.text = target.text.text;
+            rip.text.text = target.text.text;
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rip.textBubble);
+        rip.textBubble.gameObject.SetActive(!rip.text.text.Equals(String.Empty));
 
         obj.SetActive(true);
     } 

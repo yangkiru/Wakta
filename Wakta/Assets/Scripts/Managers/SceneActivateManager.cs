@@ -12,9 +12,10 @@ public class SceneActivateManager : MonoBehaviour
 	public string sceneName = string.Empty;
     IEnumerator Start() {
 	    Wakta.Instance.Pause();
-	    for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
-		    if (PanzeeManager.Instance.panzeeList[i].gameObject.activeSelf) {
-			    PanzeeManager.Instance.panzeeList[i].Pause();
+	    for (int i = 0; i < PanzeeManager.Instance.panzeeArray.Length; i++) {
+		    Panzee panzee = PanzeeManager.Instance.panzeeArray[i];
+		    if (panzee != null && panzee.gameObject.activeSelf) {
+			    panzee.Pause();
 		    }
 	    }
 		FadeManager.Instance.FadeIn(1);

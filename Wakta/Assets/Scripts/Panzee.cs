@@ -10,73 +10,88 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Panzee : MonoBehaviour, ISelectable {
-	[SerializeField]
-	private bool isDev = false;
-    public CinemachineImpulseSource impulseSource;
-    public Transform groundCheck;
+	[SerializeField] private bool isDev = false;
+	public CinemachineImpulseSource impulseSource;
 
 	public LineRenderer neckLine;
 	public DistanceJoint2D joint;
+	public BoxCollider2D coll;
 
-    public int maxHp = 5;
-    public int currentHp = 5;
-    public Image hpRenderer;
+	public int maxHp = 5;
+	public int currentHp = 5;
+	public int panzeeIdx;
+	public GameObject hpParent;
+	public Image hpRenderer;
+	public SpriteRenderer spriteRenderer;
+	public SpriteRenderer itemRenderer;
+	public CanvasGroup canvasGroup;
 
-    public float walkSpeed = 1;
+	public float walkSpeed = 1;
 	public float runSpeed = 2;
-    public float moveForce = 10;
-    public float jumpForce = 50;
-    public float cmdTimer = 0;
-    public float jumpTimer = 0;
-    public float jumpTimerSet = 0;
-	
-    public float scale = 1;
-    public enum Command {
-        Wait, Stop, Jump, Left, LeftRun, LeftJump, LeftJumpRun, Right, RightRun, RightJump, RightJumpRun
-    }
-	public bool isJumpAuto = false;
+	public float moveForce = 10;
+	public float jumpForce = 50;
+	public float cmdTimer = 0;
+	public float jumpTimer = 9999;
+	public float jumpTimerSet = 9999;
 
-	public TextMeshPro keyButton;
+	public float scale = 1;
+
+	private Color rendererColor = Color.white;
+
+	public enum Command {
+		Wait,
+		Stop,
+		Jump,
+		JumpAuto,
+		Left,
+		LeftRun,
+		LeftJump,
+		LeftJumpRun,
+		Right,
+		RightRun,
+		RightJump,
+		RightJumpRun
+	}
+
+	public TextMeshProUGUI keyButton;
 	public Transform tf;
 	public RectTransform textBubble;
 	public TextMeshProUGUI text;
 	public Rigidbody2D rb;
 
-	[SerializeField]
-    private Command command;
-    private Command lastCommand;
-    
+	[SerializeField] private Command command;
+	private Command lastCommand;
+
 	private float textTime;
-	[SerializeField]
-    private Animator animator;
+	[SerializeField] private Animator animator;
 
-    private bool isInit = false;
+	private bool isInit = false;
+	private bool isGround = false;
 
-    public bool IsPause {
-	    get { return isPause; }
-    }
-    private bool isPause = false;
+	public bool IsPause {
+		get { return isPause; }
+	}
 
-    private void Awake() {
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponentInChildren<Animator>();
-    }
+	private bool isPause = false;
 
-	private void Start()
-	{
+	private void Awake() {
+		rb = GetComponent<Rigidbody2D>();
+		animator = GetComponentInChildren<Animator>();
+	}
+
+	private void Start() {
 		Vector2 v = Random.insideUnitCircle;
 		rb.velocity = v;
 	}
-	
-	private void LateUpdate()
-	{
+
+	private void LateUpdate() {
 		Vector3 pos = tf.position;
-		pos.z = pos.x * -0.001f;
+		pos.z = pos.y * -0.001f;
 		tf.position = pos;
 	}
-	void Update()
-	{
-		if(!isInit)
+
+	void Update() {
+		if (!isInit)
 			isInit = true;
 		if (tf.position.y <= -20)
 			OnDie();
@@ -84,150 +99,223 @@ public class Panzee : MonoBehaviour, ISelectable {
 			textTime -= Time.deltaTime;
 		else
 			textBubble.gameObject.SetActive(false);
-		if (cmdTimer > 0) cmdTimer -= Time.deltaTime;
-		RaycastHit2D[] hits = Physics2D.BoxCastAll(groundCheck.position, groundCheck.localScale, 0, Vector2.zero, 0, GameManager.Instance.jumpableLayer);// | GameManager.Instance.panzeeLayer);
-		bool isGround = false;
-		for (var index = 0; index < hits.Length; index++)
-		{
-			var h = hits[index];
-			if (h && !h.collider.CompareTag("Panzee") && h.transform != tf)
-				isGround = true;
-		}
-		if (jumpTimer > 0) jumpTimer -= Time.fixedDeltaTime;
-		if (command == Command.Jump ||
-		    command == Command.LeftJump ||
-		    command == Command.RightJump ||
-		    command == Command.LeftJumpRun ||
-		    command == Command.RightJumpRun ||
-		    (isJumpAuto && (jumpTimer <= 0)))
-		{
-			jumpTimer = jumpTimerSet;
-			if (isGround) {
-				rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Force);
+		if (cmdTimer > 0 && cmdTimer < 9999) cmdTimer -= Time.deltaTime;
+		isGround = IsGrounded();
+		// RaycastHit2D[] hits = Physics2D.BoxCastAll(groundCheck.position, groundCheck.localScale, 0, Vector2.zero, 0,
+		// 	GameManager.Instance.jumpableLayer); // | GameManager.Instance.panzeeLayer);
+		// for (var index = 0; index < hits.Length; index++) {
+		// 	var h = hits[index];
+		// 	if (h && !h.collider.CompareTag("Panzee") && h.transform != tf)
+		// 		isGround = true;
+		// }
 
-				if (command == Command.Jump) (command, lastCommand) = (lastCommand, command);
-				else command -= 2;
+		if (jumpTimer > 0 && jumpTimer < 9999) jumpTimer -= Time.deltaTime;
+
+		if (jumpTimer <= 0)
+			Jump();
+		switch (command) {
+			case Command.Right:
+			case Command.RightRun:
+				if (cmdTimer <= 0) {
+					lastCommand = command;
+					command = Command.Stop;
+				} {
+				float move = moveForce * (command == Command.RightRun ? runSpeed : walkSpeed);
+				float result = Mathf.Max(move, rb.velocity.x);
+				rb.velocity = new Vector2(result, rb.velocity.y);
+			}
+				break;
+			case Command.Left:
+			case Command.LeftRun:
+				if (cmdTimer <= 0) {
+					lastCommand = command;
+					command = Command.Stop;
+				} {
+				float move = -moveForce * (command == Command.LeftRun ? runSpeed : walkSpeed);
+				float result = Mathf.Min(move, rb.velocity.x);
+				rb.velocity = new Vector2(result, rb.velocity.y);
+			}
+				break;
+			case Command.Stop:
+			case Command.Wait:
+				if (isGround) {
+					rb.velocity = new Vector2(rb.velocity.x * 0.9f, rb.velocity.y);
+					animator.SetFloat(Speed, 0);
+				}
+
+				break;
+		}
+
+		if (command != Command.Jump)
+			lastCommand = command;
+	}
+
+	private bool IsGrounded() {
+		float extraHeightText = 0.1f;
+		RaycastHit2D[] raycastHits = Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size*0.8f, 0f, Vector2.down,
+			extraHeightText, GameManager.Instance.jumpableLayer);
+		Color rayColor;
+		bool result = false;
+		for (int i = 0; i < raycastHits.Length; i++) {
+			if (raycastHits[i].collider != coll) {
+				result = true;
+				break;
 			}
 		}
-		
-		
-		switch (command) {
-            case Command.Right: case Command.RightRun:
-                if (lastCommand != command) {
-                    animator.SetFloat(Speed, command == Command.RightRun ? 1.5f :1f);
-                    tf.localScale = new Vector3(scale, scale, 1);
-					text.transform.localScale = tf.localScale;
-					keyButton.transform.localScale = tf.localScale;
-                }
-
-                if (cmdTimer <= 0)
-                {
-	                lastCommand = command;
-	                command = Command.Stop;
-                }
-                rb.velocity = new Vector2(moveForce * (command == Command.RightRun ? runSpeed : walkSpeed), rb.velocity.y);
-                break;
-            case Command.Left: case Command.LeftRun:
-                if (lastCommand != command) {
-                    animator.SetFloat(Speed, command == Command.RightRun ? 1.5f :1f);
-                    tf.localScale = new Vector3(-scale, scale, 1);
-					text.transform.localScale = tf.localScale;
-					keyButton.transform.localScale = tf.localScale;
-				}
-                if (cmdTimer <= 0)
-                {
-	                lastCommand = command;
-	                command = Command.Stop;
-                }
-                rb.velocity = new Vector2(-moveForce * (command == Command.LeftRun ? runSpeed : walkSpeed), rb.velocity.y);
-                break;
-            case Command.Stop: case Command.Wait:
-	            if (isGround)
-	            {
-		            rb.velocity = new Vector2(0, rb.velocity.y);
-		            animator.SetFloat(Speed, 0);
-	            }
-	            break;
-        }
-
-		lastCommand = command;
+		if (result) {
+			rayColor = Color.green;
+		}
+		else {
+			rayColor = Color.red;
+		}
+		return result;
 	}
-	
+
+	private void MoveInit() {
+		animator.SetFloat(Speed, command == Command.LeftRun || command == Command.RightRun ? 1.5f : 1f);
+		float vec = (command == Command.Left || command == Command.LeftRun) ? -1 : 1;
+		tf.localScale = new Vector3(vec * scale, scale, 1);
+		text.transform.localScale = tf.localScale;
+		keyButton.transform.localScale = tf.localScale;
+	}
+
+	public void Jump() {
+		if (isGround) {
+			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+			Debug.Log("last:"+lastCommand + " current:"+command);
+			command = lastCommand;
+			jumpTimer = jumpTimerSet;
+		}
+	}
+
 	public void Pause() {
 		rb.velocity = Vector2.zero;
 		rb.isKinematic = true;
 		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
 		isPause = true;
 	}
-	
+
 	public void UnPause() {
 		rb.isKinematic = false;
 		isPause = false;
 	}
 
-	public void SetCommand(Command command) {
-        this.command = command;
-        isJumpAuto = false;
+	public void SetCommand(Command cmd) {
+		switch (cmd) {
+			case Command.JumpAuto:
+				jumpTimer = 0;
+				break;
+			case Command.Jump:
+				break;
+			case Command.LeftJump:
+				lastCommand = Command.Left;
+				command = Command.Left;
+				MoveInit();
+				jumpTimer = 0;
+				jumpTimerSet = 9999;
+				break;
+			case Command.LeftJumpRun:
+				lastCommand = Command.LeftRun;
+				command = Command.LeftRun;
+				MoveInit();
+				jumpTimer = 0;
+				jumpTimerSet = 9999;
+				break;
+			case Command.RightJump:
+				lastCommand = Command.Right;
+				command = Command.Right;
+				MoveInit();
+				jumpTimer = 0;
+				jumpTimerSet = 9999;
+				break;
+			case Command.RightJumpRun:
+				lastCommand = Command.RightRun;
+				command = Command.RightRun;
+				MoveInit();
+				jumpTimer = 0;
+				jumpTimerSet = 9999;
+				break;
+			case Command.Left:
+			case Command.LeftRun:
+			case Command.Right:
+			case Command.RightRun:
+				command = cmd;
+				MoveInit();
+				jumpTimerSet = 9999;
+				jumpTimer = 9999;
+				break;
+			case Command.Stop:
+				jumpTimer = 9999;
+				jumpTimerSet = 9999;
+				command = cmd;
+				break;
+			default:
+				command = cmd;
+				break;
+		}
 	}
 
-    public void SetText(string text) {
-	    if (text == String.Empty) return;
-        this.text.text = text;
-        StringBuilder sb = new StringBuilder("[");
-        sb.Append(keyButton.text).Append(']').Append(name).Append(':').Append(text);
-        ChatManager.Instance.AddText(sb.ToString());
-        this.textBubble.gameObject.SetActive(true);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(this.textBubble);
-        textTime = 7;
-    }
+	public void SetText(string text) {
+		if (text == String.Empty) return;
+		this.text.text = text;
+		StringBuilder sb = new StringBuilder("[");
+		sb.Append(keyButton.text).Append(']').Append(name).Append(':').Append(text);
+		ChatManager.Instance.AddText(sb.ToString());
+		this.textBubble.gameObject.SetActive(true);
+		LayoutRebuilder.ForceRebuildLayoutImmediate(this.textBubble);
+		textTime = 7;
+	}
 
-    public void Damage(int damage) {
-        Debug.Log("Damaged");
-        currentHp -= damage;
-        if (currentHp <= 0)
-            OnDie();
-        else {
-	        float s = (float)currentHp / maxHp;
-	        hpRenderer.fillAmount = s;
-        }
-    }
+	public void Damage(int damage) {
+		currentHp -= damage;
+		if (!hpParent.activeSelf)
+			hpParent.SetActive(true);
+		if (currentHp <= 0)
+			OnDie();
+		else {
+			float s = (float) currentHp / maxHp;
+			hpRenderer.fillAmount = s;
+		}
+	}
 
-	private void OnDie()
-	{
-		Debug.Log("Die");
+	private void OnDie(string lastWord = "") {
 		if (Wakta.Instance.selected != null && Wakta.Instance.selected.Equals(this)) {
 			Wakta.Instance.selected = null;
 			CameraManager.Instance.FocusOut();
 		}
+
 		rb.velocity = Vector2.zero;
 		joint.enabled = false;
-		RIPManager.Instance.SpawnRIP(this, text.text);
+		RIPManager.Instance.SpawnRIP(this, lastWord);
+		PortraitManager.Instance.RemovePanzee(panzeeIdx);
 		gameObject.SetActive(false);
-		
 	}
 
 	public void Suicide(string lastWord) {
-		Debug.Log("Suicide");
-		OnDie();
+		OnDie(lastWord);
 	}
 
-	
+	public void SetAlpha(float a) {
+		rendererColor.a = a;
+		spriteRenderer.color = rendererColor;
+		canvasGroup.alpha = a;
+	}
 
-	public void Respawn()
-	{
+	public void Respawn() {
 		rb.velocity = Vector2.zero;
 		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
 		tf.rotation = Quaternion.identity;
 		SetCommand(Command.Wait);
 	}
 
-	public static void RespawnAll()
-	{
-		for (int i = 0; i < PanzeeManager.Instance.panzeeList.Count; i++) {
-			if(PanzeeManager.Instance.panzeeList[i].gameObject.activeSelf)
-				PanzeeManager.Instance.panzeeList[i].Respawn();
+	public static void RespawnAll() {
+		for (int i = 0; i < PanzeeManager.Instance.panzeeArray.Length; i++) {
+			Panzee panzee = PanzeeManager.Instance.panzeeArray[i];
+			if (panzee != null && panzee.gameObject.activeSelf)
+				panzee.Respawn();
 		}
 	}
+
 	private static readonly int Speed = Animator.StringToHash("speed");
 
 	private bool isQuit = false;
@@ -237,32 +325,25 @@ public class Panzee : MonoBehaviour, ISelectable {
 	}
 
 	private void OnDisable() {
-        if (isQuit || !isInit) return;
-        if (!isDev) {
-	        animator.SetFloat("speed", 0);
-	        command = Command.Wait;
-	        lastCommand = Command.Wait;
-	        text.gameObject.SetActive(false);
+		if (isQuit || !isInit) return;
+		if (Wakta.Instance.selected != null && Wakta.Instance.selected.Equals(this)) Wakta.Instance.selected = null;
+		Panzee panzee;
+		if (PanzeeManager.Instance.panzeeDict.TryGetValue(name, out panzee)) {
+			PanzeeManager.Instance.panzeeArray[panzee.panzeeIdx] = null;
+			PanzeeManager.Instance.panzeeDict.Remove(name);
+		}
 
-	        currentHp = maxHp;
-	        hpRenderer.fillAmount = 1;
-	        name = "UNKNOWN";
-	        CameraManager.Instance.cineGroup.RemoveMember(tf);
-	        int i;
-	        int.TryParse(keyButton.text, out i);
-	        PanzeeManager.Instance.panzeeList.Remove(this);
-	        PanzeeManager.Instance.panzeeDict.Remove(name);
-	        PanzeeManager.Instance.panzeeDictInOrder[i] = null;
-	        PanzeeManager.Instance.panzeePool.EnqueueObjectPool(gameObject);
-        }
+		if (!isDev) {
+			animator.SetFloat("speed", 0);
+			command = Command.Wait;
+			lastCommand = Command.Wait;
+			text.gameObject.SetActive(false);
 
-        if (Wakta.Instance.selected.Equals(this)) Wakta.Instance.selected = null;
-		PanzeeManager.Instance.panzeeDict.Remove(name);
-		PanzeeManager.Instance.panzeeList.Remove(this);
-		int output;
-		if(int.TryParse(keyButton.text, out output))
-			PanzeeManager.Instance.panzeeDictInOrder.Remove(output);
-    }
-
-
+			currentHp = maxHp;
+			hpRenderer.fillAmount = 1;
+			name = "UNKNOWN";
+			CameraManager.Instance.cineGroup.RemoveMember(tf);
+			PanzeeManager.Instance.panzeePool.EnqueueObjectPool(gameObject);
+		}
+	}
 }

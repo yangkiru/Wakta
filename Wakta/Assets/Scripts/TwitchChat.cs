@@ -126,8 +126,8 @@ public class TwitchChat : MonoBehaviour
                     else {
                         // Join
                         bool isBan = false;
-                        
-                        if (!PanzeeManager.Instance.banDict.TryGetValue(author, out isBan))
+                        PanzeeManager.Instance.banDict.TryGetValue(author, out isBan);
+                        if (!isBan)
                             PanzeeManager.Instance.SpawnPanzee(author, message);
                         
                     }

@@ -21,6 +21,10 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 
 	public Animator animator;
 
+	public SpriteRenderer spriteRenderer;
+	public CanvasGroup canvasGroup;
+	private Color color = Color.white;
+
 	public bool IsPause {
 		get { return isPause; }
 	}
@@ -65,7 +69,7 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
         if (Input.GetKeyDown(KeyCode.Space)) { //호치
             if (selected != null && !selected.Equals(this)) {
                 Panzee panzee = (selected as MonoBehaviour).GetComponent<Panzee>();
-                if(insidePanzee.Contains(panzee))
+                if(panzee != null)
 	                animator.SetTrigger("attack");
             }
         }
@@ -98,7 +102,7 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	private void LateUpdate()
 	{
 		Vector3 pos = tf.position;
-		pos.z = pos.x * -0.001f;
+		pos.z = pos.y * -0.001f;
 		tf.position = pos;
 	}
 	
@@ -115,22 +119,41 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	}
 
 	private void Select(int index) {
-		ISelectable current;
-        if (index == 0) {
-			current = this;
-
+		if (index == 0) {
+	        if (this.Equals(selected)) { // Foucs Out
+				selected = null;
+				CameraManager.Instance.FocusOut();
+				SetAlpha(1);
+				PanzeeManager.Instance.SetAlphaFocusPanzee(true);
+	        }
+	        else {
+		        selected = this;
+		        CameraManager.Instance.Focus(tf);
+		        SetAlpha(1);
+		        PanzeeManager.Instance.SetAlphaFocusPanzee(false);
+	        }
         }else {
-			Panzee temp;
-			PanzeeManager.Instance.panzeeDictInOrder.TryGetValue(index, out temp);
-			current = temp;
+			Panzee panzee = PanzeeManager.Instance.panzeeArray[index-1];
+			if (panzee != null && panzee.Equals(selected)) { // Focus Out
+				selected = null;
+				PanzeeManager.Instance.SetAlphaFocusPanzee();
+				CameraManager.Instance.FocusOut();
+				SetAlpha(1);
+			}
+			else if (panzee != null) {
+				selected = panzee;
+				PanzeeManager.Instance.SetAlphaFocusPanzee(panzee);
+				CameraManager.Instance.Focus(panzee.tf);
+				SetAlpha(1);
+			}
 		}
-        if (selected != null && selected.Equals(current)) selected = null; //같은걸 다시 선택하면 전체 보기
-        else selected = current;
-        if (selected != null)
-            CameraManager.Instance.Focus((selected as MonoBehaviour).transform);
-        else
-            CameraManager.Instance.FocusOut();
     }
+
+	private void SetAlpha(float a) {
+		color.a = a;
+		spriteRenderer.color = color;
+		canvasGroup.alpha = a;
+	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -143,7 +166,6 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	private void OnTriggerExit2D(Collider2D collision)
 	{
 		if (collision.CompareTag("Panzee")) {
-			Debug.Log("Out");
 			Panzee panzee = collision.GetComponent<Panzee>();
 			insidePanzee.Remove(panzee);
 		}

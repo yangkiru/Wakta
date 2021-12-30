@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     private Queue<GameObject> objs;
+    public GameObject obj;
 
     public ObjectPool()
     {
