@@ -560,7 +560,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6818382246653488054}
-  - component: {fileID: 3899850003437894285}
   - component: {fileID: 570194396746347327}
   m_Layer: 10
   m_Name: Box Collider
@@ -584,49 +583,6 @@ Transform:
   m_Father: {fileID: 6818382247889485371}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &3899850003437894285
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6818382246653488055}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.25974026, y: 0}
-    oldSize: {x: 4.8125, y: 3.625}
-    newSize: {x: 4.8125, y: 3.625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.5342872, y: 2.3582644}
-      - {x: 0.03510326, y: 2.8010228}
-      - {x: -0.71052694, y: 2.8643389}
-      - {x: -0.8793699, y: 2.6424792}
-      - {x: -0.5901253, y: 2.3369122}
-      - {x: -0.6857231, y: 1.7200825}
-      - {x: -0.44079202, y: 1.0784082}
-      - {x: -0.76822627, y: 0.7108201}
-      - {x: -1.3133883, y: 0.76133263}
-      - {x: -1.2816942, y: -0.6814256}
-      - {x: -1.1579556, y: -0.7850183}
-      - {x: 1.5175515, y: -0.7844318}
-      - {x: 1.7250237, y: -0.65903246}
-      - {x: 1.7790289, y: 0.37752056}
-      - {x: 1.3386216, y: 0.59087396}
-      - {x: 0.9004088, y: 0.6018846}
-      - {x: 0.4939884, y: 0.9668002}
-      - {x: 0.625, y: 2}
 --- !u!61 &570194396746347327
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -791,7 +747,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: a39417b727f99c44fa381b6c4f04772a, type: 2}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &6818382247889485381

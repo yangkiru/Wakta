@@ -219,7 +219,13 @@ public class TwitchBanCommand : ITwitchCommandHandler {
         if (!PanzeeManager.Instance.IsSpawnable) return;
         Panzee panzee = null;
         PanzeeManager.Instance.panzeeDict.TryGetValue(data.Author, out panzee);
+        if (data.Author.Equals(PanzeeManager.devName)) {
+            if(panzee == null)
+                PanzeeManager.Instance.SpawnPanzee(data.Author, "!입장");
+            return;
+        }
         if (panzee != null) {
+
             string lastWord = data.Message.Substring(0 + (TwitchCommands.CmdPrefix + TwitchCommands.CmdSuicide).Length).TrimStart(' ');
             panzee.Suicide("!입장을 쳐서 밴당했습니다");
         }

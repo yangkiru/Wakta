@@ -32,8 +32,8 @@ public class TwitchChat : MonoBehaviour
 
     private TwitchCredentials credentials = new TwitchCredentials
     {
-        ChannelName = "yangkiru",
-        Username = "yangkiru",
+        ChannelName = "woowakgood",
+        Username = "woowakgood",
         Password = "oauth:rh47hlslk2bns0om844zngzaq9dv0m"
     };
     
@@ -79,7 +79,7 @@ public class TwitchChat : MonoBehaviour
         if (_twitchClient.Available > 0)
         {
             string message = _reader.ReadLine();
-            Debug.Log(message);
+            //Debug.Log(message);
 
             // Twitch sends a PING message every 5 minutes or so. We MUST respond back with PONG or we will be disconnected 
             if (message.Contains("PING"))

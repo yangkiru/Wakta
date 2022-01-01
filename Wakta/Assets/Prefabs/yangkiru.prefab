@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 101373669057017079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8446947944115540724}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 678483844224734129}
   - component: {fileID: 5236246753231835358}
   m_Layer: 0
-  m_Name: mask
+  m_Name: item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413404974477530672}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.219, y: 0.0314, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -151,7 +151,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 35aa1b28a00adcd4ba46077d3fc3ad60, type: 3}
-  m_Color: {r: 0.75, g: 1, b: 0.75175774, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -635,7 +635,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: -625966908, guid: d3f25140d8b68c645a430b23bb104625, type: 3}
-  m_Color: {r: 0.5518868, g: 1, b: 0.603195, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -694,7 +694,7 @@ Transform:
   m_GameObject: {fileID: 3422038026874187395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.5, y: 0, z: -5}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3422038025309950258}
@@ -718,16 +718,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f224cb086f594ae4f9d334dd90d4a285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDev: 1
   impulseSource: {fileID: 8952481356768960939}
   neckLine: {fileID: 3422038027115265596}
   joint: {fileID: 1892453620656257996}
   coll: {fileID: 8870720036024973305}
   maxHp: 100000000
   currentHp: 100000000
+  panzeeIdx: 0
+  chatTag: 
   hpParent: {fileID: 1674465402278941131}
   hpRenderer: {fileID: 1806173199601329298}
   spriteRenderer: {fileID: 3422038026419472011}
+  itemRenderer: {fileID: 5236246753231835358}
   canvasGroup: {fileID: 4725526753052873323}
   walkSpeed: 2.5
   runSpeed: 3.5
@@ -737,6 +739,7 @@ MonoBehaviour:
   jumpTimer: 9999
   jumpTimerSet: 9999
   scale: 1
+  rendererColor: {r: 1, g: 1, b: 1, a: 1}
   keyButton: {fileID: 811398802708215751}
   tf: {fileID: 3422038026874187423}
   textBubble: {fileID: 4367004398585866393}
@@ -763,7 +766,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: af35f44178386de4fbb0118c0532f5e3, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!232 &1892453620656257996
 DistanceJoint2D:
@@ -969,7 +972,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3422038027243530871}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -989,7 +992,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0040107965, y: -0.4566033}
+  m_Offset: {x: -0.15505648, y: -0.4056956}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1000,7 +1003,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3336093, y: 1.4075553}
+  m_Size: {x: 0.9872556, y: 0.48597735}
   m_EdgeRadius: 0
 --- !u!1 &3953118137815501761
 GameObject:
@@ -1339,7 +1342,7 @@ RectTransform:
   m_GameObject: {fileID: 7428816801660548569}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4367004398585866393}

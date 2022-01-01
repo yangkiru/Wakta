@@ -29,22 +29,26 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 		get { return isPause; }
 	}
 	private bool isPause;
-	
-	private void Start()
-	{
-		Respawn();
-	}
 
 	public void Respawn()
 	{
 		rb.velocity = Vector2.zero;
-		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		GameObject respawn = GameObject.FindGameObjectWithTag("WaktaRespawn");
+		if (respawn == null) respawn = GameObject.FindGameObjectWithTag("Respawn");
+		tf.position = respawn.transform.position;
 		tf.rotation = Quaternion.identity;
 	}
 
 	void Update() {
-		if (tf.position.y <= -20)
-			Respawn();
+		if (tf.position.y <= -20) {
+			for (int i = 0; i < PanzeeManager.Instance.panzeeArray.Length; i++) {
+				Panzee panzee = PanzeeManager.Instance.panzeeArray[i];
+				if (panzee != null) {
+					panzee.Suicide(panzee.text.text);
+				}
+			}
+			SceneManager.LoadScene("Loading");
+		}
 		if (rb.velocity.x > 0.5f) {
 			tf.localScale = new Vector3(scale, scale, 1);
 			keyButton.localScale = tf.localScale;
@@ -65,6 +69,8 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
             Select(4);
         else if (Input.GetKeyDown(KeyCode.Alpha5))
             Select(5);
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+	        Select(6);
 
         if (Input.GetKeyDown(KeyCode.Space)) { //호치
             if (selected != null && !selected.Equals(this)) {
@@ -94,8 +100,6 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 
 		if (Input.GetKeyDown(KeyCode.R)) {
 			SceneManager.LoadScene("Loading");
-			Respawn();
-			Panzee.RespawnAll();
 		}
 	}
 
@@ -108,8 +112,11 @@ public class Wakta : MonoSingleton<Wakta>, ISelectable
 	
 	public void Pause() {
 		rb.velocity = Vector2.zero;
+		rb.rotation = 0;
+		rb.angularVelocity = 0;
 		rb.isKinematic = true;
 		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		selected = null;
 		isPause = true;
 	}
 	

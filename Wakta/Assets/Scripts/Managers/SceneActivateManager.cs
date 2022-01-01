@@ -18,6 +18,12 @@ public class SceneActivateManager : MonoBehaviour
 			    panzee.Pause();
 		    }
 	    }
+	    
+	    Vector2 pos = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+	    for (int i = 0; i < RIPManager.Instance.RIPList.Count; i++) {
+		    pos.x += 1;
+		    RIPManager.Instance.RIPList[i].tf.position = pos;
+	    }
 		FadeManager.Instance.FadeIn(1);
 		AsyncOperation async = SceneManager.LoadSceneAsync(sceneName.CompareTo(string.Empty) == 0 ? GameManager.LastScene : sceneName, mode);
 		async.allowSceneActivation = false;

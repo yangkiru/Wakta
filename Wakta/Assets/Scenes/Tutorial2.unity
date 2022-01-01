@@ -160,6 +160,11 @@ PrefabInstance:
       propertyPath: m_AutoConfigureDistance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3002816465737156260, guid: 67af1bf0002b0b34687dc7ab74c69b97,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3422038026874187392, guid: 67af1bf0002b0b34687dc7ab74c69b97,
         type: 3}
       propertyPath: hpParent
@@ -189,6 +194,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3422038026874187423, guid: 67af1bf0002b0b34687dc7ab74c69b97,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3422038026874187423, guid: 67af1bf0002b0b34687dc7ab74c69b97,
         type: 3}
@@ -239,6 +249,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153857441777189613, guid: 67af1bf0002b0b34687dc7ab74c69b97,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67af1bf0002b0b34687dc7ab74c69b97, type: 3}
@@ -7747,7 +7762,7 @@ PrefabInstance:
     - target: {fileID: 5199593214242404450, guid: f48efce4e172988488f33a43bed4b110,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.004
+      value: 1.85
       objectReference: {fileID: 0}
     - target: {fileID: 5199593214242404450, guid: f48efce4e172988488f33a43bed4b110,
         type: 3}

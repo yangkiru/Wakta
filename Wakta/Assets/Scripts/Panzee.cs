@@ -10,7 +10,6 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Panzee : MonoBehaviour, ISelectable {
-	[SerializeField] private bool isDev = false;
 	public CinemachineImpulseSource impulseSource;
 
 	public LineRenderer neckLine;
@@ -20,6 +19,7 @@ public class Panzee : MonoBehaviour, ISelectable {
 	public int maxHp = 5;
 	public int currentHp = 5;
 	public int panzeeIdx;
+	public String chatTag;
 	public GameObject hpParent;
 	public Image hpRenderer;
 	public SpriteRenderer spriteRenderer;
@@ -36,7 +36,7 @@ public class Panzee : MonoBehaviour, ISelectable {
 
 	public float scale = 1;
 
-	private Color rendererColor = Color.white;
+	public Color rendererColor = Color.white;
 
 	public enum Command {
 		Wait,
@@ -191,7 +191,10 @@ public class Panzee : MonoBehaviour, ISelectable {
 	public void Pause() {
 		rb.velocity = Vector2.zero;
 		rb.isKinematic = true;
+		SetCommand(Command.Stop);
 		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		joint.enabled = false;
+		neckLine.gameObject.SetActive(false);
 		isPause = true;
 	}
 
@@ -259,7 +262,7 @@ public class Panzee : MonoBehaviour, ISelectable {
 		if (text == String.Empty) return;
 		this.text.text = text;
 		StringBuilder sb = new StringBuilder("[");
-		sb.Append(keyButton.text).Append(']').Append(name).Append(':').Append(text);
+		sb.Append(chatTag).Append(']').Append(name).Append(':').Append(text);
 		ChatManager.Instance.AddText(sb.ToString());
 		this.textBubble.gameObject.SetActive(true);
 		LayoutRebuilder.ForceRebuildLayoutImmediate(this.textBubble);
@@ -287,7 +290,8 @@ public class Panzee : MonoBehaviour, ISelectable {
 		rb.velocity = Vector2.zero;
 		joint.enabled = false;
 		RIPManager.Instance.SpawnRIP(this, lastWord);
-		PortraitManager.Instance.RemovePanzee(panzeeIdx);
+		if (panzeeIdx != 5)
+			PortraitManager.Instance.RemovePanzee(panzeeIdx);
 		gameObject.SetActive(false);
 	}
 
@@ -298,12 +302,18 @@ public class Panzee : MonoBehaviour, ISelectable {
 	public void SetAlpha(float a) {
 		rendererColor.a = a;
 		spriteRenderer.color = rendererColor;
+		itemRenderer.color = rendererColor;
 		canvasGroup.alpha = a;
 	}
 
+	public static int respawnNum = 0;
 	public void Respawn() {
 		rb.velocity = Vector2.zero;
-		tf.position = GameObject.FindGameObjectWithTag("Respawn").transform.position;
+		GameObject[] respawn = GameObject.FindGameObjectsWithTag("PanzeeRespawn");
+		
+		if (respawn.Length == 0) respawn = GameObject.FindGameObjectsWithTag("Respawn");
+		Vector2 pos = respawn[(respawnNum++)%respawn.Length].transform.position;
+		tf.position = pos;
 		tf.rotation = Quaternion.identity;
 		SetCommand(Command.Wait);
 	}
@@ -333,7 +343,7 @@ public class Panzee : MonoBehaviour, ISelectable {
 			PanzeeManager.Instance.panzeeDict.Remove(name);
 		}
 
-		if (!isDev) {
+		if (panzeeIdx != 5) {
 			animator.SetFloat("speed", 0);
 			command = Command.Wait;
 			lastCommand = Command.Wait;

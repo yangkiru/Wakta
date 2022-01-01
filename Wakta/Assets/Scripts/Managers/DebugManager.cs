@@ -20,7 +20,13 @@ public class DebugManager : MonoSingleton<DebugManager>
         if (Input.GetKeyDown(KeyCode.P)) {
             if (!Input.GetKey(KeyCode.LeftShift)) {
                 Debug.Log("DEBUG:Spawn UNKNOWN Panzee");
-                PanzeeManager.Instance.SpawnPanzee();
+                for (int i = 0; i < PanzeeManager.Instance.panzeeArray.Length-1; i++) {
+	                Panzee panzee = PanzeeManager.Instance.panzeeArray[i];
+	                if (panzee == null) {
+		                PanzeeManager.Instance.SpawnPanzee();
+		                break;
+	                }
+                }
             } else {
                 Debug.Log("DEBUG:Remove Last Panzee");
                 for (int i = PanzeeManager.Instance.panzeeArray.Length-1; i >= 0; i--) {

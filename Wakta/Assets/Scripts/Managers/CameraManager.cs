@@ -38,7 +38,6 @@ public class CameraManager : MonoSingleton<CameraManager>
     public void Zoom(float amount)
     {
         cineFramTrans.m_GroupFramingSize = Math.Clamp(cineFramTrans.m_GroupFramingSize+amount, zoomLimit.x, zoomLimit.y);
-        Debug.Log("zoom "+cineFramTrans.m_GroupFramingSize);
     }
 
     public void Update()

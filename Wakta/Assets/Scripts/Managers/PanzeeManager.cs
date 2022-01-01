@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class PanzeeManager : MonoSingleton<PanzeeManager>
 {
@@ -10,8 +11,9 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
     public Dictionary<string, Panzee> panzeeDict = new Dictionary<string, Panzee>();
     public Dictionary<string, bool> banDict = new Dictionary<string, bool>();
     public Panzee[] panzeeArray = new Panzee[6];
-    public Sprite[] itemSprite
+    public Sprite[] itemSprites = new Sprite[6];
     public int maxPanzee = 5;
+    public const String devName = "yangkiru";
     public bool IsSpawnable {
 	    get { return isSpawnable; }
     }
@@ -41,31 +43,39 @@ public class PanzeeManager : MonoSingleton<PanzeeManager>
     public void SpawnPanzee(string name, string greeting) {
 	    if (!isSpawnable) return;
         Panzee panzee = panzeePool.DequeueObjectPool().GetComponent<Panzee>();
-        Vector2 wakPos = Wakta.Instance.tf.position;
-		Vector3 pos = wakPos;
-		pos.y += 1;
-		pos.z = -1;
-		panzee.tf.position = pos;
         panzee.name = name;
         panzee.hpParent.SetActive(false);
-
+		if(Wakta.Instance.selected != null) panzee.SetAlpha(0.3f);
         AddPanzee(name, panzee);
         panzee.gameObject.SetActive(true);
         panzee.SetText(greeting);
+        panzee.Respawn();
     }
 
     public void AddPanzee(string name, Panzee panzee) {
 	    panzeeDict.Add(name, panzee);
+	    if (name.Equals(devName)) {
+		    int idx = panzeeArray.Length-1;
+		    panzeeArray[idx] = panzee;
+		    panzee.panzeeIdx = idx;
+		    panzee.keyButton.text = (idx+1).ToString();
+		    panzee.chatTag = "Dev";
+		    panzee.itemRenderer.sprite = itemSprites[idx];
+		    CameraManager.Instance.cineGroup.AddMember(panzee.tf, 1f, 3f);
+		    return;
+	    }
 	    for (int i = 0; i < panzeeArray.Length-1; i++) {
 		    if (panzeeArray[i] == null) {
 			    panzeeArray[i] = panzee;
 			    panzee.panzeeIdx = i;
+			    panzee.chatTag = (i+1).ToString();
 			    panzee.keyButton.text = (i+1).ToString();
+			    panzee.itemRenderer.sprite = itemSprites[i];
 			    PortraitManager.Instance.SetPanzee(i, panzee);
+			    CameraManager.Instance.cineGroup.AddMember(panzee.tf, 1f, 3f);
 			    break;
 		    }
 	    }
-	    CameraManager.Instance.cineGroup.AddMember(panzee.tf, 1f, 3f);
     }
 
     public void SetAlphaFocusPanzee(Panzee panzee) {

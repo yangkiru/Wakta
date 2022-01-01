@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class RIPManager : MonoSingleton<RIPManager> {
     public ObjectPool RIPPool;
     public GameObject RIPObj;
+    public List<RIP> RIPList = new List<RIP>();
     
     private void Awake() {
         for (int i = 0; i < 10; i++) {
@@ -27,7 +28,9 @@ public class RIPManager : MonoSingleton<RIPManager> {
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(rip.textBubble);
         rip.textBubble.gameObject.SetActive(!rip.text.text.Equals(String.Empty));
-
+        rip.nameText.text = target.name;
+        RIPList.Add(rip);
+        
         obj.SetActive(true);
     } 
 }

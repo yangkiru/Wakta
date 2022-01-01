@@ -13,21 +13,28 @@ public class GameManager : MonoSingleton<GameManager>
 
 	private void Awake()
 	{
-		if (!PlayerPrefs.HasKey("2021Reset")) {
-			PlayerPrefs.SetInt("2021Reset", 1);
+		if (!PlayerPrefs.HasKey("2022Reset")) {
+			PlayerPrefs.SetInt("2022Reset", 1);
 			PlayerPrefs.SetString("lastScene", "Tutorial1");
 		}
-		if (!DebugManager.Instance.isDebug || !String.IsNullOrEmpty(DebugManager.Instance.sceneName))
+
+		if (!DebugManager.Instance.isDebug || !String.IsNullOrEmpty(DebugManager.Instance.sceneName)) {
+			if (PlayerPrefs.GetString("lastScene").Equals("Game")) {
+				LastScene = "Tutorial1";
+			}
 			SceneManager.LoadScene(LastScene, LoadSceneMode.Additive);
+		}
 	}
 
 	public static string LastScene {
 		get {
 			string value = PlayerPrefs.GetString("lastScene");
+			Debug.Log("get:"+value);
 			if (value.CompareTo(string.Empty) == 0) return "Tutorial1";
 			else return value;
 		}
 		set {
+			Debug.Log("set:"+value);
 			PlayerPrefs.SetString("lastScene", value);
 		}
 	}

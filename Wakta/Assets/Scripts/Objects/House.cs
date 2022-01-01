@@ -35,8 +35,7 @@ public class House : MonoBehaviour
         else Open();
     }
 
-	private void OnTriggerStay2D(Collider2D collision)
-	{
+	private void OnTriggerStay2D(Collider2D collision) {
 		bool isWakta = GameManager.IsInLayerMask(collision.gameObject.layer, GameManager.Instance.waktaLayer);
 		if (!isOpen || isEnter || !isWakta)
 			return;
