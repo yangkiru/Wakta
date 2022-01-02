@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PortraitManager : MonoSingleton<PortraitManager> {
     public Image[] images;
     public TextMeshProUGUI[] names;
+    public RectTransform[] rects;
 
     public void Start() {
         Init();
@@ -23,6 +24,8 @@ public class PortraitManager : MonoSingleton<PortraitManager> {
         images[idx].gameObject.SetActive(true);
         names[idx].text = panzee.name;
         names[idx].enabled = true;
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(names[idx].rectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rects[idx]);
     }
 
     public void RemovePanzee(int idx) {

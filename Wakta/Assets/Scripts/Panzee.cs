@@ -182,7 +182,6 @@ public class Panzee : MonoBehaviour, ISelectable {
 	public void Jump() {
 		if (isGround) {
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-			Debug.Log("last:"+lastCommand + " current:"+command);
 			command = lastCommand;
 			jumpTimer = jumpTimerSet;
 		}
@@ -313,6 +312,7 @@ public class Panzee : MonoBehaviour, ISelectable {
 		
 		if (respawn.Length == 0) respawn = GameObject.FindGameObjectsWithTag("Respawn");
 		Vector2 pos = respawn[(respawnNum++)%respawn.Length].transform.position;
+		pos.x += Random.Range(-1f, 1f);
 		tf.position = pos;
 		tf.rotation = Quaternion.identity;
 		SetCommand(Command.Wait);

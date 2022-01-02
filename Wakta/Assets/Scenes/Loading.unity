@@ -1220,7 +1220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 252.98, y: 44.674}
+  m_AnchoredPosition: {x: 313, y: 172.71}
   m_SizeDelta: {x: 505.9651, y: 345.4229}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1986257511
@@ -1252,9 +1252,7 @@ MonoBehaviour:
     \uC774\uB3D9 \uD6C4 \uC815\uC9C0\n!w \uC2DC\uAC04\uCD08 - \uC2DC\uAC04\uCD08
     \uD6C4 \uC810\uD504\n!W \uC2DC\uAC04\uCD08 - \uC2DC\uAC04\uCD08 \uB9C8\uB2E4
     \uC810\uD504\n!(q,e,Q,E) \uC2DC\uAC04\uCD08 - \uC88C\uC6B0\uCE21 \uC810\uD504
-    \uD6C4 \uC774\uB3D9\uD558\uB2E4 \uC2DC\uAC04\uCD08 \uC774\uD6C4 \uC815\uC9C0\n\n!\uD1F4\uC7A5
-    \uC720\uC5B8 - \uC720\uC5B8 \uBC1C\uC5B8\uD558\uBA70 \uD1F4\uC7A5\n!\uC785\uC7A5
-    - \uC140\uD504 \uBC34"
+    \uD6C4 \uC774\uB3D9\uD558\uB2E4 \uC2DC\uAC04\uCD08 \uC774\uD6C4 \uC815\uC9C0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 95d91c15ac8b391478c9ba58137f5c83, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 46d6369ddb993a64bada989326d65e0b, type: 2}
@@ -1281,8 +1279,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

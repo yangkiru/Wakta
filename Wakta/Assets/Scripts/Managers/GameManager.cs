@@ -29,7 +29,6 @@ public class GameManager : MonoSingleton<GameManager>
 	public static string LastScene {
 		get {
 			string value = PlayerPrefs.GetString("lastScene");
-			Debug.Log("get:"+value);
 			if (value.CompareTo(string.Empty) == 0) return "Tutorial1";
 			else return value;
 		}
